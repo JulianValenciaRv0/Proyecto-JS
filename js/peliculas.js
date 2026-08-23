@@ -1,39 +1,55 @@
 /**
- * LÓGICA DEL APARTADO DE PELÍCULAS
+ * LÓGICA DEL APARTADO DE PELÍCULAS CON FILTROS DISCOVER
  * 
- * Gestiona el consumo de endpoints para películas (populares, en cartelera,
- * próximos estrenos, mejor calificadas), la búsqueda y la ordenación.
+ * Gestiona el consumo de endpoints para películas (populares, cartelera, próximos, top rated),
+ * búsqueda por texto y filtrado avanzado (/discover/movie).
  */
 
-// Variables de estado
-let categoriaActual = 'popular'; // Endpoints: popular, now_playing, upcoming, top_rated
+// Estado global de películas
+let categoriaActual = 'popular';
 let paginaActual = 1;
 let busquedaActual = '';
-let listaPeliculas = [];
+let usandoFiltros = false;
+let filtrosAplicados = {};
+let generosPeliculas = [];
 
 // Elementos del DOM
 const gridPeliculas = document.querySelector('#grid-peliculas');
 const contenedorPaginacion = document.querySelector('#contenedor-paginacion');
+const sidebarContainer = document.querySelector('#sidebar-filtros-container');
 const formBuscar = document.querySelector('#form-buscar');
 const inputBuscar = document.querySelector('#input-buscar');
-const selectOrdenar = document.querySelector('#select-ordenar');
 const botonesSubcat = document.querySelectorAll('#subcats-peliculas .subcat-btn');
 const linksDropdown = document.querySelectorAll('.dropdown-menu a[data-cat]');
+const btnToggleMovil = document.querySelector('#btn-toggle-filtros-movil');
 
-// Cargar películas desde la API de TMDB
+// Cargar catálogo de películas desde TMDB API
 async function cargarPeliculas() {
   gridPeliculas.innerHTML = '<div class="cargando-spinner">🎬 Cargando películas...</div>';
 
   let data = null;
 
-  // Si el usuario realizó una búsqueda por texto
   if (busquedaActual) {
+    // 1. Petición por texto de búsqueda
     data = await obtenerDatosAPI('/search/movie', {
       query: busquedaActual,
       page: paginaActual
     });
+  } else if (usandoFiltros) {
+    // 2. Petición por Filtros Avanzados (/discover/movie)
+    const paramsDiscover = {
+      page: paginaActual,
+      sort_by: filtrosAplicados.sort_by || 'popularity.desc',
+      with_genres: filtrosAplicados.with_genres || '',
+      'primary_release_date.gte': filtrosAplicados.fechaDesde || '',
+      'primary_release_date.lte': filtrosAplicados.fechaHasta || '',
+      with_original_language: filtrosAplicados.with_original_language || '',
+      'vote_average.gte': filtrosAplicados['vote_average.gte'] || ''
+    };
+
+    data = await obtenerDatosAPI('/discover/movie', paramsDiscover);
   } else {
-    // Si consulta por categoría (/movie/popular, /movie/now_playing, etc.)
+    // 3. Petición por Categoría (/movie/popular, /movie/now_playing, etc.)
     data = await obtenerDatosAPI(`/movie/${categoriaActual}`, {
       page: paginaActual
     });
@@ -43,20 +59,19 @@ async function cargarPeliculas() {
     gridPeliculas.innerHTML = `
       <div class="mensaje-vacio">
         <h3>No se encontraron películas</h3>
-        <p>Intenta con otros términos de búsqueda o cambia de categoría.</p>
+        <p>Intenta ajustando los filtros de búsqueda o seleccionando otra categoría.</p>
       </div>
     `;
     contenedorPaginacion.innerHTML = '';
     return;
   }
 
-  // Guardamos la lista de películas
-  listaPeliculas = data.results;
+  // Renderizar tarjetas de películas
+  gridPeliculas.innerHTML = data.results
+    .map(pelicula => crearTarjetaMedia(pelicula, true, false, true))
+    .join('');
 
-  // Aplicamos la ordenación seleccionada
-  ordenarYMostrarPeliculas();
-
-  // Renderizamos la paginación
+  // Renderizar la paginación
   renderPaginacion(
     contenedorPaginacion,
     paginaActual,
@@ -69,57 +84,65 @@ async function cargarPeliculas() {
   );
 }
 
-// Ordenar y renderizar las películas en el DOM
-function ordenarYMostrarPeliculas() {
-  const criterio = selectOrdenar.value;
-  let peliculasOrdenadas = [...listaPeliculas];
-
-  if (criterio === 'calificacion') {
-    peliculasOrdenadas.sort((a, b) => (b.vote_average || 0) - (a.vote_average || 0));
-  } else if (criterio === 'fecha') {
-    peliculasOrdenadas.sort((a, b) => new Date(b.release_date || 0) - new Date(a.release_date || 0));
-  } else if (criterio === 'populares') {
-    peliculasOrdenadas.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
+// Cargar lista de géneros e inicializar el Sidebar de Filtros
+async function inicializarFiltros() {
+  const resGeneros = await obtenerDatosAPI('/genre/movie/list');
+  if (resGeneros && resGeneros.genres) {
+    generosPeliculas = resGeneros.genres;
   }
 
-  // Generamos el HTML dinámico reutilizando crearTarjetaMedia
-  gridPeliculas.innerHTML = peliculasOrdenadas
-    .map(pelicula => crearTarjetaMedia(pelicula, true, false, true))
-    .join('');
+  renderSidebarFiltros(
+    sidebarContainer,
+    true,
+    generosPeliculas,
+    (nuevosFiltros) => {
+      // Al aplicar filtros
+      filtrosAplicados = nuevosFiltros;
+      usandoFiltros = true;
+      busquedaActual = '';
+      inputBuscar.value = '';
+      paginaActual = 1;
+      botonesSubcat.forEach(b => b.classList.remove('activo'));
+      cargarPeliculas();
+    },
+    () => {
+      // Al limpiar filtros
+      filtrosAplicados = {};
+      usandoFiltros = false;
+      categoriaActual = 'popular';
+      paginaActual = 1;
+      botonesSubcat.forEach(b => b.classList.toggle('activo', b.dataset.cat === 'popular'));
+      cargarPeliculas();
+    }
+  );
 }
 
-// Cambiar de categoría (Populares, Cartelera, Próximos, Top Rated)
+// Cambiar categoría rápida (Populares, Cartelera, Próximamente, Top Rated)
 function cambiarCategoria(nuevaCategoria) {
   categoriaActual = nuevaCategoria;
+  usandoFiltros = false;
   busquedaActual = '';
   inputBuscar.value = '';
   paginaActual = 1;
 
-  // Actualizamos estado activo de botones
   botonesSubcat.forEach(btn => {
-    if (btn.dataset.cat === nuevaCategoria) {
-      btn.classList.add('activo');
-    } else {
-      btn.classList.remove('activo');
-    }
+    btn.classList.toggle('activo', btn.dataset.cat === nuevaCategoria);
   });
 
   cargarPeliculas();
 }
 
-// Escuchadores de Eventos
+// Inicialización de eventos
 document.addEventListener('DOMContentLoaded', () => {
-  // Carga inicial
+  inicializarFiltros();
   cargarPeliculas();
 
-  // Evento para botones de subcategorías
+  // Evento para subcategorías rápidas
   botonesSubcat.forEach(btn => {
-    btn.addEventListener('click', () => {
-      cambiarCategoria(btn.dataset.cat);
-    });
+    btn.addEventListener('click', () => cambiarCategoria(btn.dataset.cat));
   });
 
-  // Evento para el menú desplegable en el header
+  // Evento para ítems del menú desplegable
   linksDropdown.forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
@@ -127,21 +150,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Evento para el formulario de búsqueda
+  // Evento de búsqueda rápida
   formBuscar.addEventListener('submit', (e) => {
     e.preventDefault();
     const texto = inputBuscar.value.trim();
     if (texto) {
       busquedaActual = texto;
+      usandoFiltros = false;
       paginaActual = 1;
-      // Quitamos estado activo de subcategorías al buscar
       botonesSubcat.forEach(b => b.classList.remove('activo'));
       cargarPeliculas();
     }
   });
 
-  // Evento para el selector de ordenación
-  selectOrdenar.addEventListener('change', () => {
-    ordenarYMostrarPeliculas();
-  });
+  // Toggle de sidebar en móviles
+  if (btnToggleMovil && sidebarContainer) {
+    btnToggleMovil.addEventListener('click', () => {
+      sidebarContainer.classList.toggle('abierto');
+    });
+  }
 });

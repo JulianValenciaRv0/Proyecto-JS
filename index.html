@@ -6,7 +6,7 @@
   <title>Películas - TMDB Explorer</title>
   <meta name="description" content="Explora las películas más populares, en cartelera, próximos estrenos y mejor calificadas con la API de TMDB.">
   
-  <!-- Estilos Globales -->
+  <!-- Estilos Globales Cinematográficos -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -66,11 +66,11 @@
     </div>
   </header>
 
-  <!-- HERO / BANNER -->
+  <!-- HERO / BANNER CINEMÁTICO -->
   <section class="hero-seccion">
     <div class="hero-contenido">
       <h1 class="hero-titulo">Catálogo de Películas</h1>
-      <p class="hero-subtitulo">Millones de películas por descubrir. Explora las distintas colecciones y tendencias.</p>
+      <p class="hero-subtitulo">Millones de películas por descubrir. Filtra por géneros, fechas, calificaciones e idioma.</p>
       
       <!-- SUB-CATEGORÍAS DE PELÍCULAS -->
       <div class="subcategorias-bar" id="subcats-peliculas">
@@ -82,42 +82,51 @@
     </div>
   </section>
 
-  <!-- CONTENIDO PRINCIPAL -->
+  <!-- CONTENIDO PRINCIPAL CON SIDEBAR DE FILTROS -->
   <main class="contenedor-principal">
     
-    <!-- BARRA DE CONTROLES (Buscador y Ordenador) -->
-    <div class="barra-controles">
-      <form class="grupo-buscar" id="form-buscar">
-        <input 
-          type="text" 
-          id="input-buscar" 
-          class="input-buscar" 
-          placeholder="Buscar películas por título..." 
-          autocomplete="off"
-        >
-        <button type="submit" class="btn-buscar" title="Buscar">
-          🔍
-        </button>
-      </form>
+    <!-- Botón Toggle Filtros Móvil -->
+    <button type="button" id="btn-toggle-filtros-movil" class="toggle-filtros-btn">
+      🎛️ Mostrar / Ocultar Filtros Avanzados
+    </button>
 
-      <div class="grupo-ordenar">
-        <label for="select-ordenar">Ordenar por:</label>
-        <select id="select-ordenar" class="select-ordenar">
-          <option value="populares">Popularidad</option>
-          <option value="calificacion">Mejor calificación</option>
-          <option value="fecha">Fecha de estreno</option>
-        </select>
-      </div>
+    <div class="layout-con-sidebar">
+      
+      <!-- SIDEBAR LATERAL DE FILTROS AVANZADOS -->
+      <aside id="sidebar-filtros-container" class="sidebar-filtros">
+        <!-- Renderizado dinámico desde render.js -->
+      </aside>
+
+      <!-- CONTENIDO DERECHA (Buscador, Rejilla de Películas y Paginación) -->
+      <section class="zona-contenido">
+        
+        <!-- BARRA DE BÚSQUEDA RÁPIDA -->
+        <div class="barra-busqueda-wrapper">
+          <form class="grupo-buscar" id="form-buscar">
+            <input 
+              type="text" 
+              id="input-buscar" 
+              class="input-buscar" 
+              placeholder="Buscar película por título..." 
+              autocomplete="off"
+            >
+            <button type="submit" class="btn-buscar" title="Buscar">
+              🔍
+            </button>
+          </form>
+        </div>
+
+        <!-- REJILLA DE PELÍCULAS -->
+        <div id="grid-peliculas" class="grid-contenido">
+          <div class="cargando-spinner">🎬 Cargando catálogo de películas...</div>
+        </div>
+
+        <!-- SECCIÓN DE PAGINACIÓN -->
+        <div id="contenedor-paginacion"></div>
+
+      </section>
+
     </div>
-
-    <!-- REJILLA DE PELÍCULAS -->
-    <div id="grid-peliculas" class="grid-contenido">
-      <!-- Las tarjetas se cargarán dinámicamente mediante JavaScript -->
-      <div class="cargando-spinner">Cargando películas...</div>
-    </div>
-
-    <!-- SECCIÓN DE PAGINACIÓN -->
-    <div id="contenedor-paginacion"></div>
 
   </main>
 
@@ -126,10 +135,10 @@
     <div class="footer-contenido">
       <div class="footer-info">
         <h4>TMDB Explorer</h4>
-        <p>Aplicación desarrollada con Vanilla JavaScript consumiendo la API de TMDB (HTTP GET).</p>
+        <p>Aplicación desarrollada con Vanilla JavaScript consumiendo la API de TMDB (HTTP GET /discover).</p>
       </div>
       <div>
-        <img src="media/logo.svg" alt="TMDB Logo" style="height: 30px;">
+        <img src="media/logo.svg" alt="TMDB Logo" style="height: 32px;">
       </div>
     </div>
     <div class="footer-copy">
