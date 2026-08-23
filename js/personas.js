@@ -18,7 +18,7 @@ const inputBuscar = document.querySelector('#input-buscar');
 
 // Cargar personas populares o buscar personas
 async function cargarPersonas() {
-  gridPersonas.innerHTML = '<div class="cargando-spinner">👥 Cargando personas populares...</div>';
+  gridPersonas.innerHTML = '<div class="cargando-spinner">Cargando personas populares...</div>';
 
   let data = null;
 
@@ -66,6 +66,9 @@ async function cargarPersonas() {
 
 // Escuchadores de eventos
 document.addEventListener('DOMContentLoaded', () => {
+  // Inicializar pantalla de bienvenida estilo Netflix
+  inicializarPantallaBienvenida(false);
+
   cargarPersonas();
 
   formBuscar.addEventListener('submit', (e) => {
