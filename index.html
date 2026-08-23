@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Películas - TMDB Explorer</title>
+  <meta name="description" content="Explora las películas más populares, en cartelera, próximos estrenos y mejor calificadas con la API de TMDB.">
+  
+  <!-- Estilos Globales -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- HEADER PRINCIPAL -->
+  <header class="header-principal">
+    <div class="header-container">
+      <a href="index.html" class="logo-container" title="Inicio TMDB Explorer">
+        <img src="media/logo.svg" alt="TMDB Logo" class="logo-img">
+      </a>
+
+      <nav class="nav-principal">
+        <ul class="nav-lista">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link activo">
+              🎬 Películas
+            </a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item"><a href="#" data-cat="popular">Popular</a></li>
+              <li class="dropdown-item"><a href="#" data-cat="now_playing">En cartelera</a></li>
+              <li class="dropdown-item"><a href="#" data-cat="upcoming">Próximamente</a></li>
+              <li class="dropdown-item"><a href="#" data-cat="top_rated">Mejor calificadas</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="pages/series.html" class="nav-link">
+              📺 Series de TV
+            </a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item"><a href="pages/series.html?cat=popular">Popular</a></li>
+              <li class="dropdown-item"><a href="pages/series.html?cat=airing_today">Transmitiéndose hoy</a></li>
+              <li class="dropdown-item"><a href="pages/series.html?cat=on_the_air">En televisión</a></li>
+              <li class="dropdown-item"><a href="pages/series.html?cat=top_rated">Mejor calificadas</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="pages/personas.html" class="nav-link">
+              👥 Personas
+            </a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item"><a href="pages/personas.html">Personas populares</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="pages/awards.html" class="nav-link">
+              🏆 Awards
+            </a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item"><a href="pages/awards.html">Galardones y Destacados</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO / BANNER -->
+  <section class="hero-seccion">
+    <div class="hero-contenido">
+      <h1 class="hero-titulo">Catálogo de Películas</h1>
+      <p class="hero-subtitulo">Millones de películas por descubrir. Explora las distintas colecciones y tendencias.</p>
+      
+      <!-- SUB-CATEGORÍAS DE PELÍCULAS -->
+      <div class="subcategorias-bar" id="subcats-peliculas">
+        <button class="subcat-btn activo" data-cat="popular">🔥 Populares</button>
+        <button class="subcat-btn" data-cat="now_playing">🍿 En Cartelera</button>
+        <button class="subcat-btn" data-cat="upcoming">🗓️ Próximamente</button>
+        <button class="subcat-btn" data-cat="top_rated">⭐ Mejor Calificadas</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="contenedor-principal">
+    
+    <!-- BARRA DE CONTROLES (Buscador y Ordenador) -->
+    <div class="barra-controles">
+      <form class="grupo-buscar" id="form-buscar">
+        <input 
+          type="text" 
+          id="input-buscar" 
+          class="input-buscar" 
+          placeholder="Buscar películas por título..." 
+          autocomplete="off"
+        >
+        <button type="submit" class="btn-buscar" title="Buscar">
+          🔍
+        </button>
+      </form>
+
+      <div class="grupo-ordenar">
+        <label for="select-ordenar">Ordenar por:</label>
+        <select id="select-ordenar" class="select-ordenar">
+          <option value="populares">Popularidad</option>
+          <option value="calificacion">Mejor calificación</option>
+          <option value="fecha">Fecha de estreno</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- REJILLA DE PELÍCULAS -->
+    <div id="grid-peliculas" class="grid-contenido">
+      <!-- Las tarjetas se cargarán dinámicamente mediante JavaScript -->
+      <div class="cargando-spinner">Cargando películas...</div>
+    </div>
+
+    <!-- SECCIÓN DE PAGINACIÓN -->
+    <div id="contenedor-paginacion"></div>
+
+  </main>
+
+  <!-- FOOTER PRINCIPAL -->
+  <footer class="footer-principal">
+    <div class="footer-contenido">
+      <div class="footer-info">
+        <h4>TMDB Explorer</h4>
+        <p>Aplicación desarrollada con Vanilla JavaScript consumiendo la API de TMDB (HTTP GET).</p>
+      </div>
+      <div>
+        <img src="media/logo.svg" alt="TMDB Logo" style="height: 30px;">
+      </div>
+    </div>
+    <div class="footer-copy">
+      <p>&copy; 2026 TMDB Explorer - Práctica de Desarrollo Web</p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS MODULARES -->
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/peliculas.js"></script>
+</body>
+</html>
