@@ -1,0 +1,631 @@
+/* ==========================================================================
+   TMDB CLONE - ESTILOS PRINCIPALES (Vanilla CSS)
+   Paleta oficial TMDB: Azul Marino (#0d253f), Turquesa (#01b4e4), Verde (#90cea1)
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --tmdb-navy: #0d253f;
+  --tmdb-teal: #01b4e4;
+  --tmdb-green: #90cea1;
+  --tmdb-dark-bg: #032541;
+  --bg-light: #f8fafc;
+  --card-bg: #ffffff;
+  --text-dark: #0f172a;
+  --text-muted: #64748b;
+  --text-light: #f8fafc;
+  --score-green: #21d07a;
+  --score-yellow: #d2d531;
+  --score-red: #db2360;
+  --border-radius: 12px;
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset y Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ==========================================================================
+   HEADER Y NAVEGACIÓN
+   ========================================================================== */
+.header-principal {
+  background-color: var(--tmdb-navy);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.header-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0.8rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo-img {
+  height: 36px;
+  width: auto;
+  transition: transform 0.2s ease;
+}
+
+.logo-img:hover {
+  transform: scale(1.03);
+}
+
+.nav-principal {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-lista {
+  display: flex;
+  list-style: none;
+  gap: 1.8rem;
+}
+
+.nav-item {
+  position: relative;
+}
+
+.nav-link {
+  color: var(--text-light);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: var(--transition);
+}
+
+.nav-link:hover,
+.nav-link.activo {
+  color: var(--tmdb-teal);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Menú Desplegable (Dropdown) */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  min-width: 180px;
+  border-radius: 8px;
+  box-shadow: var(--shadow-lg);
+  padding: 0.5rem 0;
+  list-style: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: var(--transition);
+  z-index: 100;
+}
+
+.nav-item:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-item a {
+  display: block;
+  padding: 0.6rem 1.2rem;
+  color: var(--text-dark);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.dropdown-item a:hover {
+  background-color: #f1f5f9;
+  color: var(--tmdb-teal);
+}
+
+/* ==========================================================================
+   HERO / BANNER DE SECCIÓN
+   ========================================================================== */
+.hero-seccion {
+  background: linear-gradient(135deg, var(--tmdb-navy) 0%, var(--tmdb-dark-bg) 100%);
+  color: white;
+  padding: 3rem 1.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-seccion::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(1, 180, 228, 0.15) 0%, rgba(0,0,0,0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-contenido {
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-titulo {
+  font-size: 2.3rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(90deg, #ffffff 0%, var(--tmdb-green) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-subtitulo {
+  font-size: 1.05rem;
+  color: #94a3b8;
+  margin-bottom: 1.8rem;
+}
+
+/* Sub-Categorías Tabs Bar */
+.subcategorias-bar {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.subcat-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.5rem 1.2rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+  transition: var(--transition);
+}
+
+.subcat-btn:hover,
+.subcat-btn.activo {
+  background: linear-gradient(90deg, var(--tmdb-teal) 0%, var(--tmdb-green) 100%);
+  color: var(--tmdb-navy);
+  border-color: transparent;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(1, 180, 228, 0.3);
+}
+
+/* ==========================================================================
+   BARRA DE CONTROLES (Buscador y Ordenamiento)
+   ========================================================================== */
+.contenedor-principal {
+  max-width: 1300px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+  flex: 1;
+}
+
+.barra-controles {
+  background: white;
+  padding: 1.2rem 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.grupo-buscar {
+  display: flex;
+  flex: 1;
+  min-width: 280px;
+  max-width: 500px;
+  position: relative;
+}
+
+.input-buscar {
+  width: 100%;
+  padding: 0.75rem 1.2rem;
+  padding-right: 3rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 25px;
+  font-size: 0.95rem;
+  outline: none;
+  font-family: inherit;
+  transition: var(--transition);
+}
+
+.input-buscar:focus {
+  border-color: var(--tmdb-teal);
+  box-shadow: 0 0 0 4px rgba(1, 180, 228, 0.15);
+}
+
+.btn-buscar {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--tmdb-teal);
+  color: white;
+  border: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.btn-buscar:hover {
+  background: #0096c7;
+  transform: translateY(-50%) scale(1.05);
+}
+
+.grupo-ordenar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.grupo-ordenar label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.select-ordenar {
+  padding: 0.6rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  background: white;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  cursor: pointer;
+  outline: none;
+  transition: var(--transition);
+}
+
+.select-ordenar:focus {
+  border-color: var(--tmdb-teal);
+}
+
+/* ==========================================================================
+   GRID DE CONTENIDO (Películas, Series, Personas, Awards)
+   ========================================================================== */
+.grid-contenido {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.8rem;
+  margin-bottom: 2.5rem;
+}
+
+/* Tarjeta Individual */
+.tarjeta-media {
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.tarjeta-media:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
+.poster-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 150%; /* Relación de aspecto 2:3 para afiches de TMDB */
+  background: #1e293b;
+  overflow: hidden;
+}
+
+.poster-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.tarjeta-media:hover .poster-img {
+  transform: scale(1.05);
+}
+
+/* Insignia de Calificación Circular (TMDB Rating Circle) */
+.badge-puntuacion {
+  position: absolute;
+  bottom: -18px;
+  left: 14px;
+  width: 38px;
+  height: 38px;
+  background-color: var(--tmdb-navy);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 800;
+  font-size: 0.8rem;
+  border: 3px solid var(--tmdb-navy);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.badge-puntuacion.alta { border-color: var(--score-green); }
+.badge-puntuacion.media { border-color: var(--score-yellow); }
+.badge-puntuacion.baja { border-color: var(--score-red); }
+
+/* Insignia de Award (Galardones) */
+.badge-award {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  z-index: 10;
+}
+
+.tarjeta-info {
+  padding: 1.4rem 1rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.tarjeta-titulo {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 0.3rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.3;
+}
+
+.tarjeta-titulo:hover {
+  color: var(--tmdb-teal);
+}
+
+.tarjeta-fecha {
+  font-size: 0.83rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.tarjeta-resumen {
+  font-size: 0.8rem;
+  color: #475569;
+  margin-top: 0.6rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+}
+
+/* Tarjeta de Persona */
+.tarjeta-persona {
+  background: white;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  text-align: center;
+}
+
+.tarjeta-persona:hover {
+  transform: translateY(-50px);
+  box-shadow: var(--shadow-md);
+}
+
+.tarjeta-persona .tarjeta-info {
+  padding: 1rem;
+}
+
+.persona-conocido {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 0.4rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   PAGINACIÓN
+   ========================================================================== */
+.paginacion-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.btn-paginacion {
+  background: white;
+  color: var(--tmdb-navy);
+  border: 2px solid #e2e8f0;
+  padding: 0.6rem 1.4rem;
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: var(--transition);
+}
+
+.btn-paginacion:hover:not(:disabled) {
+  background: var(--tmdb-navy);
+  color: white;
+  border-color: var(--tmdb-navy);
+}
+
+.btn-paginacion:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pagina-actual-badge {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  background: #edf2f7;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+}
+
+/* ==========================================================================
+   ESTADOS DE CARGA Y VACÍO
+   ========================================================================== */
+.cargando-spinner {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem 1rem;
+  color: var(--tmdb-teal);
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.mensaje-vacio {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem 1rem;
+  background: white;
+  border-radius: var(--border-radius);
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+.footer-principal {
+  background: var(--tmdb-navy);
+  color: #94a3b8;
+  padding: 2.5rem 1.5rem 1.5rem 1.5rem;
+  margin-top: auto;
+}
+
+.footer-contenido {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 1.5rem;
+}
+
+.footer-info h4 {
+  color: white;
+  font-size: 1.1rem;
+  margin-bottom: 0.4rem;
+}
+
+.footer-copy {
+  text-align: center;
+  font-size: 0.85rem;
+  margin-top: 1.2rem;
+  color: #64748b;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .nav-lista {
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .hero-titulo {
+    font-size: 1.7rem;
+  }
+
+  .barra-controles {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .grupo-buscar {
+    max-width: 100%;
+  }
+
+  .grid-contenido {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+}
