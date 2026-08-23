@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Series de TV - TMDB Explorer</title>
+  <meta name="description" content="Explora las mejores series de televisión, programas en emisión y contenido mejor valorado de TMDB.">
+  
+  <!-- Estilos Globales -->
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- HEADER PRINCIPAL -->
+  <header class="header-principal">
+    <div class="header-container">
+      <a href="../index.html" class="logo-container" title="Inicio TMDB Explorer">
+        <img src="../media/logo.svg" alt="TMDB Logo" class="logo-img">
+      </a>
+
+      <nav class="nav-principal">
+        <ul class="nav-lista">
+          <li class="nav-item">
+            <a href="../index.html" class="nav-link">
+              🎬 Películas
+            </a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item"><a href="../index.html?cat=popular">Popular</a></li>
+              <li class="dropdown-item"><a href="../index.html?cat=now_playing">En cartelera</a></li>
+              <li class="dropdown-item"><a href="../index.html?cat=upcoming">Próximamente</a></li>
+              <li class="dropdown-item"><a href="../index.html?cat=top_rated">Mejor calificadas</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="series.html" class="nav-link activo">
+              📺 Series de TV
+            </a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item"><a href="#" data-cat="popular">Popular</a></li>
+              <li class="dropdown-item"><a href="#" data-cat="airing_today">Transmitiéndose hoy</a></li>
+              <li class="dropdown-item"><a href="#" data-cat="on_the_air">En televisión</a></li>
+              <li class="dropdown-item"><a href="#" data-cat="top_rated">Mejor calificadas</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="personas.html" class="nav-link">
+              👥 Personas
+            </a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item"><a href="personas.html">Personas populares</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="awards.html" class="nav-link">
+              🏆 Awards
+            </a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item"><a href="awards.html">Galardones y Destacados</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO / BANNER -->
+  <section class="hero-seccion">
+    <div class="hero-contenido">
+      <h1 class="hero-titulo">Catálogo de Series de TV</h1>
+      <p class="hero-subtitulo">Descubre las series más aclamadas, emisiones de hoy y producciones de televisión.</p>
+      
+      <!-- SUB-CATEGORÍAS DE SERIES DE TV -->
+      <div class="subcategorias-bar" id="subcats-series">
+        <button class="subcat-btn activo" data-cat="popular">🔥 Populares</button>
+        <button class="subcat-btn" data-cat="airing_today">📺 Transmitiéndose Hoy</button>
+        <button class="subcat-btn" data-cat="on_the_air">📡 En Televisión</button>
+        <button class="subcat-btn" data-cat="top_rated">⭐ Mejor Calificadas</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="contenedor-principal">
+    
+    <!-- BARRA DE CONTROLES (Buscador y Ordenador) -->
+    <div class="barra-controles">
+      <form class="grupo-buscar" id="form-buscar">
+        <input 
+          type="text" 
+          id="input-buscar" 
+          class="input-buscar" 
+          placeholder="Buscar series por nombre..." 
+          autocomplete="off"
+        >
+        <button type="submit" class="btn-buscar" title="Buscar">
+          🔍
+        </button>
+      </form>
+
+      <div class="grupo-ordenar">
+        <label for="select-ordenar">Ordenar por:</label>
+        <select id="select-ordenar" class="select-ordenar">
+          <option value="populares">Popularidad</option>
+          <option value="calificacion">Mejor calificación</option>
+          <option value="fecha">Fecha de estreno</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- REJILLA DE SERIES -->
+    <div id="grid-series" class="grid-contenido">
+      <div class="cargando-spinner">Cargando series de televisión...</div>
+    </div>
+
+    <!-- SECCIÓN DE PAGINACIÓN -->
+    <div id="contenedor-paginacion"></div>
+
+  </main>
+
+  <!-- FOOTER PRINCIPAL -->
+  <footer class="footer-principal">
+    <div class="footer-contenido">
+      <div class="footer-info">
+        <h4>TMDB Explorer</h4>
+        <p>Aplicación desarrollada con Vanilla JavaScript consumiendo la API de TMDB (HTTP GET).</p>
+      </div>
+      <div>
+        <img src="../media/logo.svg" alt="TMDB Logo" style="height: 30px;">
+      </div>
+    </div>
+    <div class="footer-copy">
+      <p>&copy; 2026 TMDB Explorer - Práctica de Desarrollo Web</p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS MODULARES -->
+  <script src="../js/config.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/render.js"></script>
+  <script src="../js/series.js"></script>
+</body>
+</html>
