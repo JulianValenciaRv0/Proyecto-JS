@@ -1,74 +1,81 @@
 /**
- * LÓGICA DEL APARTADO DE AWARDS & GALARDONES
+ * LÓGICA DEL APARTADO DE AWARDS & GALARDONES CON FILTROS DISCOVER
  * 
  * Presenta las producciones mejor calificadas y aclamadas por la crítica y audiencia,
- * resaltando galardones y medallas de excelencia mediante llamadas HTTP GET.
+ * resaltando galardones dorados mediante llamadas HTTP GET.
  */
 
-// Variables de estado
+// Estado global de awards
 let tipoActual = 'peliculas_top'; // peliculas_top, series_top, obras_maestras
 let paginaActual = 1;
 let busquedaActual = '';
-let listaAwards = [];
+let usandoFiltros = false;
+let filtrosAplicados = {};
+let generosAwards = [];
 
 // Elementos del DOM
 const gridAwards = document.querySelector('#grid-awards');
 const contenedorPaginacion = document.querySelector('#contenedor-paginacion');
+const sidebarContainer = document.querySelector('#sidebar-filtros-container');
 const formBuscar = document.querySelector('#form-buscar');
 const inputBuscar = document.querySelector('#input-buscar');
-const selectOrdenar = document.querySelector('#select-ordenar');
 const botonesSubcat = document.querySelectorAll('#subcats-awards .subcat-btn');
+const btnToggleMovil = document.querySelector('#btn-toggle-filtros-movil');
 
 // Cargar galardonados desde la API de TMDB
 async function cargarAwards() {
   gridAwards.innerHTML = '<div class="cargando-spinner">🏆 Cargando producciones galardonadas...</div>';
 
   let data = null;
-  let esPelicula = true;
+  const esMovie = tipoActual !== 'series_top';
 
   if (busquedaActual) {
-    // Petición de búsqueda
-    data = await obtenerDatosAPI('/search/movie', {
+    data = await obtenerDatosAPI(esMovie ? '/search/movie' : '/search/tv', {
       query: busquedaActual,
       page: paginaActual
     });
+  } else if (usandoFiltros) {
+    const endpoint = esMovie ? '/discover/movie' : '/discover/tv';
+    const paramsDiscover = {
+      page: paginaActual,
+      sort_by: filtrosAplicados.sort_by || 'vote_average.desc',
+      with_genres: filtrosAplicados.with_genres || '',
+      [esMovie ? 'primary_release_date.gte' : 'first_air_date.gte']: filtrosAplicados.fechaDesde || '',
+      [esMovie ? 'primary_release_date.lte' : 'first_air_date.lte']: filtrosAplicados.fechaHasta || '',
+      with_original_language: filtrosAplicados.with_original_language || '',
+      'vote_average.gte': filtrosAplicados['vote_average.gte'] || '7.5'
+    };
+
+    data = await obtenerDatosAPI(endpoint, paramsDiscover);
   } else if (tipoActual === 'peliculas_top') {
-    esPelicula = true;
-    data = await obtenerDatosAPI('/movie/top_rated', {
-      page: paginaActual
-    });
+    data = await obtenerDatosAPI('/movie/top_rated', { page: paginaActual });
   } else if (tipoActual === 'series_top') {
-    esPelicula = false;
-    data = await obtenerDatosAPI('/tv/top_rated', {
-      page: paginaActual
-    });
+    data = await obtenerDatosAPI('/tv/top_rated', { page: paginaActual });
   } else if (tipoActual === 'obras_maestras') {
-    esPelicula = true;
-    data = await obtenerDatosAPI('/movie/top_rated', {
-      page: paginaActual
+    data = await obtenerDatosAPI('/discover/movie', {
+      page: paginaActual,
+      'vote_average.gte': '8.3',
+      sort_by: 'vote_average.desc'
     });
-    // Filtramos producciones con puntuaciones muy altas (>= 8.5)
-    if (data && data.results) {
-      data.results = data.results.filter(item => (item.vote_average || 0) >= 8.3);
-    }
   }
 
   if (!data || !data.results || data.results.length === 0) {
     gridAwards.innerHTML = `
       <div class="mensaje-vacio">
-        <h3>No se encontraron obras galardonadas</h3>
-        <p>Intenta con otra búsqueda o selecciona otra categoría.</p>
+        <h3>No se encontraron producciones galardonadas</h3>
+        <p>Intenta ajustando los filtros de búsqueda.</p>
       </div>
     `;
     contenedorPaginacion.innerHTML = '';
     return;
   }
 
-  listaAwards = data.results;
+  // Renderizar tarjetas con la insignia dorada de galardón (esAward = true)
+  gridAwards.innerHTML = data.results
+    .map(item => crearTarjetaMedia(item, esMovie, true, false))
+    .join('');
 
-  ordenarYMostrarAwards(esPelicula);
-
-  // Paginación
+  // Renderizar la paginación
   renderPaginacion(
     contenedorPaginacion,
     paginaActual,
@@ -81,32 +88,42 @@ async function cargarAwards() {
   );
 }
 
-// Ordenar y mostrar tarjetas de galardones
-function ordenarYMostrarAwards(esPelicula = true) {
-  const criterio = selectOrdenar.value;
-  let ordenados = [...listaAwards];
-
-  if (criterio === 'calificacion') {
-    ordenados.sort((a, b) => (b.vote_average || 0) - (a.vote_average || 0));
-  } else if (criterio === 'fecha') {
-    ordenados.sort((a, b) => {
-      const fechaA = new Date(a.release_date || a.first_air_date || 0);
-      const fechaB = new Date(b.release_date || b.first_air_date || 0);
-      return fechaB - fechaA;
-    });
-  } else if (criterio === 'populares') {
-    ordenados.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
+// Cargar géneros e inicializar Sidebar de Filtros
+async function inicializarFiltros() {
+  const esMovie = tipoActual !== 'series_top';
+  const resGeneros = await obtenerDatosAPI(esMovie ? '/genre/movie/list' : '/genre/tv/list');
+  if (resGeneros && resGeneros.genres) {
+    generosAwards = resGeneros.genres;
   }
 
-  // Renderizamos pasando esAward = true para mostrar la insignia dorada
-  gridAwards.innerHTML = ordenados
-    .map(item => crearTarjetaMedia(item, tipoActual !== 'series_top', true, false))
-    .join('');
+  renderSidebarFiltros(
+    sidebarContainer,
+    esMovie,
+    generosAwards,
+    (nuevosFiltros) => {
+      filtrosAplicados = nuevosFiltros;
+      usandoFiltros = true;
+      busquedaActual = '';
+      inputBuscar.value = '';
+      paginaActual = 1;
+      botonesSubcat.forEach(b => b.classList.remove('activo'));
+      cargarAwards();
+    },
+    () => {
+      filtrosAplicados = {};
+      usandoFiltros = false;
+      tipoActual = 'peliculas_top';
+      paginaActual = 1;
+      botonesSubcat.forEach(b => b.classList.toggle('activo', b.dataset.tipo === 'peliculas_top'));
+      cargarAwards();
+    }
+  );
 }
 
-// Cambiar categoría de Awards
+// Cambiar subcategoría de Awards
 function cambiarTipoAward(nuevoTipo) {
   tipoActual = nuevoTipo;
+  usandoFiltros = false;
   busquedaActual = '';
   inputBuscar.value = '';
   paginaActual = 1;
@@ -115,17 +132,17 @@ function cambiarTipoAward(nuevoTipo) {
     btn.classList.toggle('activo', btn.dataset.tipo === nuevoTipo);
   });
 
+  inicializarFiltros();
   cargarAwards();
 }
 
-// Inicializar eventos
+// Inicialización
 document.addEventListener('DOMContentLoaded', () => {
+  inicializarFiltros();
   cargarAwards();
 
   botonesSubcat.forEach(btn => {
-    btn.addEventListener('click', () => {
-      cambiarTipoAward(btn.dataset.tipo);
-    });
+    btn.addEventListener('click', () => cambiarTipoAward(btn.dataset.tipo));
   });
 
   formBuscar.addEventListener('submit', (e) => {
@@ -133,13 +150,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const texto = inputBuscar.value.trim();
     if (texto) {
       busquedaActual = texto;
+      usandoFiltros = false;
       paginaActual = 1;
       botonesSubcat.forEach(b => b.classList.remove('activo'));
       cargarAwards();
     }
   });
 
-  selectOrdenar.addEventListener('change', () => {
-    ordenarYMostrarAwards();
-  });
+  if (btnToggleMovil && sidebarContainer) {
+    btnToggleMovil.addEventListener('click', () => {
+      sidebarContainer.classList.toggle('abierto');
+    });
+  }
 });
