@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personas Populares - TMDB Explorer</title>
+  <meta name="description" content="Descubre a los actores, directores y personalidades más populares del cine y la televisión en TMDB.">
+  
+  <!-- Estilos Globales -->
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- HEADER PRINCIPAL -->
+  <header class="header-principal">
+    <div class="header-container">
+      <a href="../index.html" class="logo-container" title="Inicio TMDB Explorer">
+        <img src="../media/logo.svg" alt="TMDB Logo" class="logo-img">
+      </a>
+
+      <nav class="nav-principal">
+        <ul class="nav-lista">
+          <li class="nav-item">
+            <a href="../index.html" class="nav-link">
+              🎬 Películas
+            </a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item"><a href="../index.html?cat=popular">Popular</a></li>
+              <li class="dropdown-item"><a href="../index.html?cat=now_playing">En cartelera</a></li>
+              <li class="dropdown-item"><a href="../index.html?cat=upcoming">Próximamente</a></li>
+              <li class="dropdown-item"><a href="../index.html?cat=top_rated">Mejor calificadas</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="series.html" class="nav-link">
+              📺 Series de TV
+            </a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item"><a href="series.html?cat=popular">Popular</a></li>
+              <li class="dropdown-item"><a href="series.html?cat=airing_today">Transmitiéndose hoy</a></li>
+              <li class="dropdown-item"><a href="series.html?cat=on_the_air">En televisión</a></li>
+              <li class="dropdown-item"><a href="series.html?cat=top_rated">Mejor calificadas</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="personas.html" class="nav-link activo">
+              👥 Personas
+            </a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item"><a href="personas.html">Personas populares</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="awards.html" class="nav-link">
+              🏆 Awards
+            </a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item"><a href="awards.html">Galardones y Destacados</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO / BANNER -->
+  <section class="hero-seccion">
+    <div class="hero-contenido">
+      <h1 class="hero-titulo">Personas Populares</h1>
+      <p class="hero-subtitulo">Conoce a las estrellas, actores y cineastas más influyentes en la industria del entretenimiento.</p>
+    </div>
+  </section>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="contenedor-principal">
+    
+    <!-- BARRA DE CONTROLES (Buscador de personas) -->
+    <div class="barra-controles">
+      <form class="grupo-buscar" id="form-buscar" style="max-width: 100%;">
+        <input 
+          type="text" 
+          id="input-buscar" 
+          class="input-buscar" 
+          placeholder="Buscar persona por nombre..." 
+          autocomplete="off"
+        >
+        <button type="submit" class="btn-buscar" title="Buscar">
+          🔍
+        </button>
+      </form>
+    </div>
+
+    <!-- REJILLA DE PERSONAS -->
+    <div id="grid-personas" class="grid-contenido">
+      <div class="cargando-spinner">👥 Cargando personas populares...</div>
+    </div>
+
+    <!-- SECCIÓN DE PAGINACIÓN -->
+    <div id="contenedor-paginacion"></div>
+
+  </main>
+
+  <!-- FOOTER PRINCIPAL -->
+  <footer class="footer-principal">
+    <div class="footer-contenido">
+      <div class="footer-info">
+        <h4>TMDB Explorer</h4>
+        <p>Aplicación desarrollada con Vanilla JavaScript consumiendo la API de TMDB (HTTP GET).</p>
+      </div>
+      <div>
+        <img src="../media/logo.svg" alt="TMDB Logo" style="height: 30px;">
+      </div>
+    </div>
+    <div class="footer-copy">
+      <p>&copy; 2026 TMDB Explorer - Práctica de Desarrollo Web</p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS MODULARES -->
+  <script src="../js/config.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/render.js"></script>
+  <script src="../js/personas.js"></script>
+</body>
+</html>
