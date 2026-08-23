@@ -1,13 +1,13 @@
 /**
- * UTILIDADES DE RENDERIZADO PARA EL DOM (REDISEÑO CINEMÁTICO & FILTROS)
+ * UTILIDADES DE RENDERIZADO PARA EL DOM - CINEVERSE
  * 
  * Funciones reutilizables encargadas de generar el HTML dinámico
- * para las tarjetas de películas, series, personas, paginación y el sidebar de filtros.
+ * para las tarjetas de películas, series, personas, paginación, sidebar y la pantalla de inicio estilo Netflix.
  */
 
-// Formatea la fecha de AAAA-MM-DD a un texto amigable
+// Formatea la fecha de AAAA-MM-DD a un texto amigable sin emojis
 function formatearFecha(fechaStr) {
-  if (!fechaStr) return "Sin fecha de estreno";
+  if (!fechaStr) return "Estreno no disponible";
   const opciones = { year: 'numeric', month: 'short', day: 'numeric' };
   try {
     return new Date(fechaStr).toLocaleDateString('es-ES', opciones);
@@ -35,7 +35,7 @@ function crearTarjetaMedia(item, esPelicula = true, esAward = false, isRoot = fa
 
   const badgeAwardHTML = esAward ? `
     <div class="badge-award">
-      🏆 TMDB Honor
+      Honor CineVerse
     </div>
   ` : '';
 
@@ -56,7 +56,7 @@ function crearTarjetaMedia(item, esPelicula = true, esAward = false, isRoot = fa
       </div>
       <div class="tarjeta-info">
         <h3 class="tarjeta-titulo" title="${titulo || ''}">${titulo || 'Título no disponible'}</h3>
-        <span class="tarjeta-fecha">📅 ${formatearFecha(fecha)}</span>
+        <span class="tarjeta-fecha">Estreno: ${formatearFecha(fecha)}</span>
         <p class="tarjeta-resumen">${item.overview || 'Sin descripción disponible en este momento.'}</p>
       </div>
     </article>
@@ -85,13 +85,13 @@ function crearTarjetaPersona(persona, isRoot = false) {
       </div>
       <div class="tarjeta-info">
         <h3 class="tarjeta-titulo">${persona.name}</h3>
-        <p class="persona-conocido">🎬 <strong>Conocido por:</strong> ${trabajos}</p>
+        <p class="persona-conocido">Conocido por: ${trabajos}</p>
       </div>
     </article>
   `;
 }
 
-// Renderiza la barra de paginación
+// Renderiza la barra de paginación limpia sin emojis
 function renderPaginacion(contenedor, paginaActual, totalPaginas, onCambiarPagina) {
   if (!contenedor) return;
 
@@ -100,11 +100,11 @@ function renderPaginacion(contenedor, paginaActual, totalPaginas, onCambiarPagin
   contenedor.innerHTML = `
     <div class="paginacion-container">
       <button id="btn-anterior" class="btn-paginacion" ${paginaActual <= 1 ? 'disabled' : ''}>
-        ← Anterior
+        Anterior
       </button>
       <span class="pagina-actual-badge">Página ${paginaActual} de ${maxPaginas}</span>
       <button id="btn-siguiente" class="btn-paginacion" ${paginaActual >= maxPaginas ? 'disabled' : ''}>
-        Siguiente →
+        Siguiente
       </button>
     </div>
   `;
@@ -122,7 +122,7 @@ function renderPaginacion(contenedor, paginaActual, totalPaginas, onCambiarPagin
 }
 
 /**
- * RENDERIZADOR DEL SIDEBAR DE FILTROS AVANZADOS TMDB
+ * RENDERIZADOR DEL SIDEBAR DE FILTROS AVANZADOS CINEVERSE
  */
 function renderSidebarFiltros(contenedor, esPelicula = true, generos = [], onAplicarFiltros, onLimpiarFiltros) {
   if (!contenedor) return;
@@ -133,7 +133,7 @@ function renderSidebarFiltros(contenedor, esPelicula = true, generos = [], onApl
 
   contenedor.innerHTML = `
     <div class="sidebar-header">
-      <h3 class="sidebar-titulo">🎛️ Filtros Avanzados</h3>
+      <h3 class="sidebar-titulo">Filtros Avanzados</h3>
     </div>
 
     <!-- ORDENAR POR -->
@@ -191,34 +191,32 @@ function renderSidebarFiltros(contenedor, esPelicula = true, generos = [], onApl
     <div class="filtro-bloque range-container">
       <div class="range-header">
         <span class="filtro-label">Calificación Mínima</span>
-        <span id="valor-calificacion-slider" style="color:var(--neon-cyan); font-weight:800;">0 ⭐</span>
+        <span id="valor-calificacion-slider" style="color:var(--neon-cyan); font-weight:800;">0 / 10</span>
       </div>
       <input type="range" id="filtro-calificacion-range" class="filtro-range" min="0" max="10" step="0.5" value="0">
     </div>
 
     <!-- BOTONERA -->
     <div class="filtro-acciones">
-      <button type="button" id="btn-aplicar-filtros-side" class="btn-aplicar-filtros">🔍 Aplicar Filtros</button>
-      <button type="button" id="btn-limpiar-filtros-side" class="btn-limpiar-filtros">🧹 Limpiar Filtros</button>
+      <button type="button" id="btn-aplicar-filtros-side" class="btn-aplicar-filtros">Aplicar Filtros</button>
+      <button type="button" id="btn-limpiar-filtros-side" class="btn-limpiar-filtros">Limpiar Filtros</button>
     </div>
   `;
 
-  // Interactividad de Chips de Género
+  // Chips de género
   const chipsGeneros = contenedor.querySelectorAll('.chip-genero');
   chipsGeneros.forEach(chip => {
-    chip.addEventListener('click', () => {
-      chip.classList.toggle('activo');
-    });
+    chip.addEventListener('click', () => chip.classList.toggle('activo'));
   });
 
-  // Slider feedback
+  // Slider de calificación
   const sliderRange = contenedor.querySelector('#filtro-calificacion-range');
   const valorSlider = contenedor.querySelector('#valor-calificacion-slider');
   sliderRange.addEventListener('input', (e) => {
-    valorSlider.textContent = `${e.target.value} ⭐`;
+    valorSlider.textContent = `${e.target.value} / 10`;
   });
 
-  // Botón Aplicar
+  // Botón Aplicar Filtros
   contenedor.querySelector('#btn-aplicar-filtros-side').addEventListener('click', () => {
     const generosSeleccionados = Array.from(contenedor.querySelectorAll('.chip-genero.activo'))
       .map(c => c.dataset.id);
@@ -235,7 +233,7 @@ function renderSidebarFiltros(contenedor, esPelicula = true, generos = [], onApl
     onAplicarFiltros(filtros);
   });
 
-  // Botón Limpiar
+  // Botón Limpiar Filtros
   contenedor.querySelector('#btn-limpiar-filtros-side').addEventListener('click', () => {
     chipsGeneros.forEach(c => c.classList.remove('activo'));
     contenedor.querySelector('#filtro-orden').value = 'popularity.desc';
@@ -243,8 +241,47 @@ function renderSidebarFiltros(contenedor, esPelicula = true, generos = [], onApl
     contenedor.querySelector('#filtro-fecha-hasta').value = '';
     contenedor.querySelector('#filtro-idioma').value = '';
     sliderRange.value = 0;
-    valorSlider.textContent = '0 ⭐';
+    valorSlider.textContent = '0 / 10';
 
     onLimpiarFiltros();
   });
+}
+
+/**
+ * PANTALLA DE INICIO / BIENVENIDA ESTILO NETFLIX
+ * Se muestra siempre al cargar o recargar la página (F5).
+ */
+function inicializarPantallaBienvenida(isRoot = true) {
+  const logoPath = isRoot ? 'media/logo.svg' : '../media/logo.svg';
+
+  // Si no existe en el DOM, la creamos
+  let overlay = document.querySelector('#welcome-intro-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'welcome-intro-overlay';
+    overlay.className = 'welcome-intro-overlay';
+    overlay.innerHTML = `
+      <div class="intro-card">
+        <div class="intro-logo-badge">
+          <img src="${logoPath}" alt="CineVerse Logo">
+        </div>
+        <h1 class="intro-titulo">Bienvenido a CineVerse</h1>
+        <p class="intro-subtitulo">
+          Explora miles de películas, series de televisión y celebridades con la mejor experiencia cinematográfica.
+        </p>
+        <button type="button" id="btn-explorar-intro" class="btn-explorar-intro">
+          EXPLORAR CATÁLOGO
+        </button>
+      </div>
+    `;
+    document.body.prepend(overlay);
+  }
+
+  // Evento para cerrar la pantalla de bienvenida
+  const btnExplorar = overlay.querySelector('#btn-explorar-intro');
+  if (btnExplorar) {
+    btnExplorar.addEventListener('click', () => {
+      overlay.classList.add('oculto');
+    });
+  }
 }

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   TMDB CLONE - ESTILO CINEMÁTICO DARK GLASSMORPHISM & NEON ACCENTS
+   CINEVERSE - ESTILO CINEMÁTICO DARK GLASSMORPHISM & INTRO ESTILO NETFLIX
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
@@ -8,7 +8,7 @@
   --bg-dark: #090d16;
   --bg-card: rgba(18, 26, 43, 0.7);
   --bg-card-hover: rgba(28, 39, 64, 0.85);
-  --bg-sidebar: rgba(13, 19, 33, 0.8);
+  --bg-sidebar: rgba(13, 19, 33, 0.85);
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
   --text-dim: #64748b;
@@ -28,13 +28,11 @@
   --score-red: #EF4444;
 
   --border-glass: 1px solid rgba(255, 255, 255, 0.08);
-  --border-neon: 1px solid rgba(0, 223, 216, 0.3);
   --border-radius: 16px;
   --radius-sm: 10px;
 
   --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  --shadow-neon: 0 0 20px rgba(0, 223, 216, 0.25);
-  --shadow-pink: 0 0 20px rgba(255, 0, 128, 0.25);
+  --shadow-neon: 0 0 25px rgba(0, 223, 216, 0.3);
 
   --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -64,6 +62,107 @@ body {
 a {
   text-decoration: none;
   color: inherit;
+}
+
+/* ==========================================================================
+   PANTALLA DE BIENVENIDA / INTRO ESTILO NETFLIX
+   ========================================================================== */
+.welcome-intro-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at center, #111827 0%, #030712 100%);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s ease;
+}
+
+.welcome-intro-overlay.oculto {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.intro-card {
+  max-width: 650px;
+  width: 100%;
+  background: rgba(17, 24, 39, 0.85);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  padding: 3.5rem 2.5rem;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75), 0 0 30px rgba(0, 223, 216, 0.15);
+  animation: introPop 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes introPop {
+  0% { transform: scale(0.92); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.intro-logo-badge {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+}
+
+.intro-logo-badge img {
+  height: 55px;
+  width: auto;
+  filter: drop-shadow(0 0 15px rgba(0, 223, 216, 0.5));
+}
+
+.intro-titulo {
+  font-size: 2.2rem;
+  font-weight: 900;
+  margin-bottom: 0.8rem;
+  background: linear-gradient(90deg, #FFFFFF 0%, var(--neon-cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.intro-subtitulo {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+}
+
+.btn-explorar-intro {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  background: var(--grad-primary);
+  color: #090d16;
+  border: none;
+  padding: 1rem 2.8rem;
+  border-radius: 35px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: 0 0 30px rgba(0, 223, 216, 0.4);
+  transition: var(--transition);
+  animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 25px rgba(0, 223, 216, 0.3); }
+  50% { box-shadow: 0 0 45px rgba(0, 223, 216, 0.7); }
+}
+
+.btn-explorar-intro:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, #007CF0 0%, var(--neon-cyan) 100%);
 }
 
 /* ==========================================================================
@@ -250,7 +349,7 @@ a {
 }
 
 /* ==========================================================================
-   LAYOUT PRINCIPAL Y SIDEBAR DE FILTROS AVANZADOS TMDB
+   LAYOUT PRINCIPAL Y SIDEBAR DE FILTROS AVANZADOS
    ========================================================================== */
 .contenedor-principal {
   max-width: 1400px;
@@ -272,7 +371,6 @@ a {
   font-size: 1rem;
   cursor: pointer;
   margin-bottom: 1.5rem;
-  box-shadow: var(--shadow-pink);
 }
 
 .layout-con-sidebar {
@@ -282,7 +380,7 @@ a {
   align-items: start;
 }
 
-/* PANEL LATERAL DE FILTROS AVANZADOS (GLASSMORPHISM SIDEBAR) */
+/* PANEL LATERAL DE FILTROS AVANZADOS */
 .sidebar-filtros {
   background: var(--bg-sidebar);
   backdrop-filter: blur(20px);
@@ -509,7 +607,7 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  font-size: 1rem;
   transition: var(--transition);
 }
 
@@ -640,7 +738,6 @@ a {
   -webkit-box-orient: vertical;
   overflow: hidden;
   line-height: 1.3;
-
 }
 
 .tarjeta-media:hover .tarjeta-titulo {
@@ -679,7 +776,6 @@ a {
 .tarjeta-persona:hover {
   transform: translateY(-8px);
   border-color: var(--neon-purple);
-  box-shadow: var(--shadow-pink);
 }
 
 .persona-conocido {
@@ -793,9 +889,7 @@ a {
   color: var(--text-dim);
 }
 
-/* ==========================================================================
-   MEDIA QUERIES FOR RESPONSIVE DESIGN
-   ========================================================================== */
+/* Media Queries Responsive */
 @media (max-width: 992px) {
   .layout-con-sidebar {
     grid-template-columns: 1fr;
@@ -835,5 +929,13 @@ a {
   .grid-contenido {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 1rem;
+  }
+
+  .intro-card {
+    padding: 2rem 1.5rem;
+  }
+  
+  .intro-titulo {
+    font-size: 1.7rem;
   }
 }
