@@ -2,7 +2,7 @@
  * LÓGICA DEL APARTADO DE AWARDS & GALARDONES CON FILTROS DISCOVER
  * 
  * Presenta las producciones mejor calificadas y aclamadas por la crítica y audiencia,
- * resaltando galardones dorados mediante llamadas HTTP GET.
+ * resaltando galardones mediante llamadas HTTP GET.
  */
 
 // Estado global de awards
@@ -24,7 +24,7 @@ const btnToggleMovil = document.querySelector('#btn-toggle-filtros-movil');
 
 // Cargar galardonados desde la API de TMDB
 async function cargarAwards() {
-  gridAwards.innerHTML = '<div class="cargando-spinner">🏆 Cargando producciones galardonadas...</div>';
+  gridAwards.innerHTML = '<div class="cargando-spinner">Cargando producciones galardonadas...</div>';
 
   let data = null;
   const esMovie = tipoActual !== 'series_top';
@@ -70,7 +70,7 @@ async function cargarAwards() {
     return;
   }
 
-  // Renderizar tarjetas con la insignia dorada de galardón (esAward = true)
+  // Renderizar tarjetas con la insignia de galardón (esAward = true)
   gridAwards.innerHTML = data.results
     .map(item => crearTarjetaMedia(item, esMovie, true, false))
     .join('');
@@ -138,6 +138,9 @@ function cambiarTipoAward(nuevoTipo) {
 
 // Inicialización
 document.addEventListener('DOMContentLoaded', () => {
+  // Inicializar pantalla de bienvenida estilo Netflix
+  inicializarPantallaBienvenida(false);
+
   inicializarFiltros();
   cargarAwards();
 

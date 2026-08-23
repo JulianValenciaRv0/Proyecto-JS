@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TMDB Awards & Galardones - TMDB Explorer</title>
-  <meta name="description" content="Sección exclusiva con las películas y series más premiadas, mejor calificadas y aclamadas de TMDB.">
+  <title>Awards & Galardones - CineVerse Explorer</title>
+  <meta name="description" content="Sección exclusiva con las películas y series más premiadas, mejor calificadas y aclamadas de CineVerse.">
   
   <!-- Estilos Globales Cinematográficos -->
   <link rel="stylesheet" href="../css/style.css">
@@ -14,15 +14,15 @@
   <!-- HEADER PRINCIPAL -->
   <header class="header-principal">
     <div class="header-container">
-      <a href="../index.html" class="logo-container" title="Inicio TMDB Explorer">
-        <img src="../media/logo.svg" alt="TMDB Logo" class="logo-img">
+      <a href="../index.html" class="logo-container" title="Inicio CineVerse Explorer">
+        <img src="../media/logo.svg" alt="CineVerse Logo" class="logo-img">
       </a>
 
       <nav class="nav-principal">
         <ul class="nav-lista">
           <li class="nav-item">
             <a href="../index.html" class="nav-link">
-              🎬 Películas
+              Películas
             </a>
             <ul class="dropdown-menu">
               <li class="dropdown-item"><a href="../index.html?cat=popular">Popular</a></li>
@@ -34,7 +34,7 @@
 
           <li class="nav-item">
             <a href="series.html" class="nav-link">
-              📺 Series de TV
+              Series de TV
             </a>
             <ul class="dropdown-menu">
               <li class="dropdown-item"><a href="series.html?cat=popular">Popular</a></li>
@@ -46,7 +46,7 @@
 
           <li class="nav-item">
             <a href="personas.html" class="nav-link">
-              👥 Personas
+              Personas
             </a>
             <ul class="dropdown-menu">
               <li class="dropdown-item"><a href="personas.html">Personas populares</a></li>
@@ -55,7 +55,7 @@
 
           <li class="nav-item">
             <a href="awards.html" class="nav-link activo">
-              🏆 Awards
+              Awards
             </a>
             <ul class="dropdown-menu">
               <li class="dropdown-item"><a href="awards.html">Galardones y Destacados</a></li>
@@ -69,14 +69,14 @@
   <!-- HERO / BANNER CINEMÁTICO -->
   <section class="hero-seccion">
     <div class="hero-contenido">
-      <h1 class="hero-titulo">🏆 TMDB Awards & Salón de la Fama</h1>
+      <h1 class="hero-titulo">Awards & Salón de la Fama</h1>
       <p class="hero-subtitulo">Las obras maestras del cine y la televisión con las puntuaciones más elevadas e históricas.</p>
       
       <!-- SUB-CATEGORÍAS DE AWARDS -->
       <div class="subcategorias-bar" id="subcats-awards">
-        <button class="subcat-btn activo" data-tipo="peliculas_top">🏆 Películas Aclamadas</button>
-        <button class="subcat-btn" data-tipo="series_top">👑 Series Históricas</button>
-        <button class="subcat-btn" data-tipo="obras_maestras">🌟 Excelencia 8.5+</button>
+        <button class="subcat-btn activo" data-tipo="peliculas_top">Películas Aclamadas</button>
+        <button class="subcat-btn" data-tipo="series_top">Series Históricas</button>
+        <button class="subcat-btn" data-tipo="obras_maestras">Excelencia 8.5+</button>
       </div>
     </div>
   </section>
@@ -86,7 +86,7 @@
     
     <!-- Botón Toggle Filtros Móvil -->
     <button type="button" id="btn-toggle-filtros-movil" class="toggle-filtros-btn">
-      🎛️ Mostrar / Ocultar Filtros Avanzados
+      Mostrar / Ocultar Filtros Avanzados
     </button>
 
     <div class="layout-con-sidebar">
@@ -110,14 +110,14 @@
               autocomplete="off"
             >
             <button type="submit" class="btn-buscar" title="Buscar">
-              🔍
+              Buscar
             </button>
           </form>
         </div>
 
         <!-- REJILLA DE AWARDS -->
         <div id="grid-awards" class="grid-contenido">
-          <div class="cargando-spinner">🏆 Cargando galardones y destacados...</div>
+          <div class="cargando-spinner">Cargando galardones y destacados...</div>
         </div>
 
         <!-- SECCIÓN DE PAGINACIÓN -->
@@ -133,15 +133,15 @@
   <footer class="footer-principal">
     <div class="footer-contenido">
       <div class="footer-info">
-        <h4>TMDB Explorer</h4>
+        <h4>CineVerse Explorer</h4>
         <p>Aplicación desarrollada con Vanilla JavaScript consumiendo la API de TMDB (HTTP GET /discover).</p>
       </div>
       <div>
-        <img src="../media/logo.svg" alt="TMDB Logo" style="height: 32px;">
+        <img src="../media/logo.svg" alt="CineVerse Logo" style="height: 32px;">
       </div>
     </div>
     <div class="footer-copy">
-      <p>&copy; 2026 TMDB Explorer - Práctica de Desarrollo Web</p>
+      <p>&copy; 2026 CineVerse Explorer - Práctica de Desarrollo Web</p>
     </div>
   </footer>
 
