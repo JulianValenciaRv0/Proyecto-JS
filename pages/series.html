@@ -6,7 +6,7 @@
   <title>Series de TV - TMDB Explorer</title>
   <meta name="description" content="Explora las mejores series de televisión, programas en emisión y contenido mejor valorado de TMDB.">
   
-  <!-- Estilos Globales -->
+  <!-- Estilos Globales Cinematográficos -->
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -82,41 +82,51 @@
     </div>
   </section>
 
-  <!-- CONTENIDO PRINCIPAL -->
+  <!-- CONTENIDO PRINCIPAL CON SIDEBAR DE FILTROS -->
   <main class="contenedor-principal">
     
-    <!-- BARRA DE CONTROLES (Buscador y Ordenador) -->
-    <div class="barra-controles">
-      <form class="grupo-buscar" id="form-buscar">
-        <input 
-          type="text" 
-          id="input-buscar" 
-          class="input-buscar" 
-          placeholder="Buscar series por nombre..." 
-          autocomplete="off"
-        >
-        <button type="submit" class="btn-buscar" title="Buscar">
-          🔍
-        </button>
-      </form>
+    <!-- Botón Toggle Filtros Móvil -->
+    <button type="button" id="btn-toggle-filtros-movil" class="toggle-filtros-btn">
+      🎛️ Mostrar / Ocultar Filtros Avanzados
+    </button>
 
-      <div class="grupo-ordenar">
-        <label for="select-ordenar">Ordenar por:</label>
-        <select id="select-ordenar" class="select-ordenar">
-          <option value="populares">Popularidad</option>
-          <option value="calificacion">Mejor calificación</option>
-          <option value="fecha">Fecha de estreno</option>
-        </select>
-      </div>
+    <div class="layout-con-sidebar">
+      
+      <!-- SIDEBAR LATERAL DE FILTROS AVANZADOS -->
+      <aside id="sidebar-filtros-container" class="sidebar-filtros">
+        <!-- Renderizado dinámico desde render.js -->
+      </aside>
+
+      <!-- CONTENIDO DERECHA (Buscador, Rejilla de Series y Paginación) -->
+      <section class="zona-contenido">
+        
+        <!-- BARRA DE BÚSQUEDA RÁPIDA -->
+        <div class="barra-busqueda-wrapper">
+          <form class="grupo-buscar" id="form-buscar">
+            <input 
+              type="text" 
+              id="input-buscar" 
+              class="input-buscar" 
+              placeholder="Buscar series por nombre..." 
+              autocomplete="off"
+            >
+            <button type="submit" class="btn-buscar" title="Buscar">
+              🔍
+            </button>
+          </form>
+        </div>
+
+        <!-- REJILLA DE SERIES -->
+        <div id="grid-series" class="grid-contenido">
+          <div class="cargando-spinner">📺 Cargando series de televisión...</div>
+        </div>
+
+        <!-- SECCIÓN DE PAGINACIÓN -->
+        <div id="contenedor-paginacion"></div>
+
+      </section>
+
     </div>
-
-    <!-- REJILLA DE SERIES -->
-    <div id="grid-series" class="grid-contenido">
-      <div class="cargando-spinner">Cargando series de televisión...</div>
-    </div>
-
-    <!-- SECCIÓN DE PAGINACIÓN -->
-    <div id="contenedor-paginacion"></div>
 
   </main>
 
@@ -125,10 +135,10 @@
     <div class="footer-contenido">
       <div class="footer-info">
         <h4>TMDB Explorer</h4>
-        <p>Aplicación desarrollada con Vanilla JavaScript consumiendo la API de TMDB (HTTP GET).</p>
+        <p>Aplicación desarrollada con Vanilla JavaScript consumiendo la API de TMDB (HTTP GET /discover).</p>
       </div>
       <div>
-        <img src="../media/logo.svg" alt="TMDB Logo" style="height: 30px;">
+        <img src="../media/logo.svg" alt="TMDB Logo" style="height: 32px;">
       </div>
     </div>
     <div class="footer-copy">
