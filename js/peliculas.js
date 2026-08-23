@@ -25,18 +25,16 @@ const btnToggleMovil = document.querySelector('#btn-toggle-filtros-movil');
 
 // Cargar catálogo de películas desde TMDB API
 async function cargarPeliculas() {
-  gridPeliculas.innerHTML = '<div class="cargando-spinner">🎬 Cargando películas...</div>';
+  gridPeliculas.innerHTML = '<div class="cargando-spinner">Cargando películas...</div>';
 
   let data = null;
 
   if (busquedaActual) {
-    // 1. Petición por texto de búsqueda
     data = await obtenerDatosAPI('/search/movie', {
       query: busquedaActual,
       page: paginaActual
     });
   } else if (usandoFiltros) {
-    // 2. Petición por Filtros Avanzados (/discover/movie)
     const paramsDiscover = {
       page: paginaActual,
       sort_by: filtrosAplicados.sort_by || 'popularity.desc',
@@ -49,7 +47,6 @@ async function cargarPeliculas() {
 
     data = await obtenerDatosAPI('/discover/movie', paramsDiscover);
   } else {
-    // 3. Petición por Categoría (/movie/popular, /movie/now_playing, etc.)
     data = await obtenerDatosAPI(`/movie/${categoriaActual}`, {
       page: paginaActual
     });
@@ -96,7 +93,6 @@ async function inicializarFiltros() {
     true,
     generosPeliculas,
     (nuevosFiltros) => {
-      // Al aplicar filtros
       filtrosAplicados = nuevosFiltros;
       usandoFiltros = true;
       busquedaActual = '';
@@ -106,7 +102,6 @@ async function inicializarFiltros() {
       cargarPeliculas();
     },
     () => {
-      // Al limpiar filtros
       filtrosAplicados = {};
       usandoFiltros = false;
       categoriaActual = 'popular';
@@ -117,7 +112,7 @@ async function inicializarFiltros() {
   );
 }
 
-// Cambiar categoría rápida (Populares, Cartelera, Próximamente, Top Rated)
+// Cambiar categoría rápida
 function cambiarCategoria(nuevaCategoria) {
   categoriaActual = nuevaCategoria;
   usandoFiltros = false;
@@ -134,15 +129,16 @@ function cambiarCategoria(nuevaCategoria) {
 
 // Inicialización de eventos
 document.addEventListener('DOMContentLoaded', () => {
+  // Inicializar Pantalla de Inicio / Bienvenida estilo Netflix (se resetea al recargar)
+  inicializarPantallaBienvenida(true);
+
   inicializarFiltros();
   cargarPeliculas();
 
-  // Evento para subcategorías rápidas
   botonesSubcat.forEach(btn => {
     btn.addEventListener('click', () => cambiarCategoria(btn.dataset.cat));
   });
 
-  // Evento para ítems del menú desplegable
   linksDropdown.forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
@@ -150,7 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Evento de búsqueda rápida
   formBuscar.addEventListener('submit', (e) => {
     e.preventDefault();
     const texto = inputBuscar.value.trim();
@@ -163,7 +158,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Toggle de sidebar en móviles
   if (btnToggleMovil && sidebarContainer) {
     btnToggleMovil.addEventListener('click', () => {
       sidebarContainer.classList.toggle('abierto');
