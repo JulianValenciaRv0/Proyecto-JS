@@ -25,18 +25,16 @@ const btnToggleMovil = document.querySelector('#btn-toggle-filtros-movil');
 
 // Cargar catálogo de series desde TMDB API
 async function cargarSeries() {
-  gridSeries.innerHTML = '<div class="cargando-spinner">📺 Cargando series de televisión...</div>';
+  gridSeries.innerHTML = '<div class="cargando-spinner">Cargando series de televisión...</div>';
 
   let data = null;
 
   if (busquedaActual) {
-    // 1. Petición por texto de búsqueda
     data = await obtenerDatosAPI('/search/tv', {
       query: busquedaActual,
       page: paginaActual
     });
   } else if (usandoFiltros) {
-    // 2. Petición por Filtros Avanzados (/discover/tv)
     const paramsDiscover = {
       page: paginaActual,
       sort_by: filtrosAplicados.sort_by || 'popularity.desc',
@@ -49,7 +47,6 @@ async function cargarSeries() {
 
     data = await obtenerDatosAPI('/discover/tv', paramsDiscover);
   } else {
-    // 3. Petición por Categoría (/tv/popular, /tv/airing_today, etc.)
     data = await obtenerDatosAPI(`/tv/${categoriaActual}`, {
       page: paginaActual
     });
@@ -132,6 +129,9 @@ function cambiarCategoria(nuevaCategoria) {
 
 // Inicialización de eventos
 document.addEventListener('DOMContentLoaded', () => {
+  // Inicializar pantalla de bienvenida estilo Netflix
+  inicializarPantallaBienvenida(false);
+
   // Verificar si viene una categoría por URL (?cat=...)
   const params = new URLSearchParams(window.location.search);
   const catUrl = params.get('cat');

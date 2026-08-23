@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Series de TV - TMDB Explorer</title>
-  <meta name="description" content="Explora las mejores series de televisión, programas en emisión y contenido mejor valorado de TMDB.">
+  <title>Series de TV - CineVerse Explorer</title>
+  <meta name="description" content="Explora las mejores series de televisión, programas en emisión y contenido mejor valorado de CineVerse.">
   
   <!-- Estilos Globales Cinematográficos -->
   <link rel="stylesheet" href="../css/style.css">
@@ -14,15 +14,15 @@
   <!-- HEADER PRINCIPAL -->
   <header class="header-principal">
     <div class="header-container">
-      <a href="../index.html" class="logo-container" title="Inicio TMDB Explorer">
-        <img src="../media/logo.svg" alt="TMDB Logo" class="logo-img">
+      <a href="../index.html" class="logo-container" title="Inicio CineVerse Explorer">
+        <img src="../media/logo.svg" alt="CineVerse Logo" class="logo-img">
       </a>
 
       <nav class="nav-principal">
         <ul class="nav-lista">
           <li class="nav-item">
             <a href="../index.html" class="nav-link">
-              🎬 Películas
+              Películas
             </a>
             <ul class="dropdown-menu">
               <li class="dropdown-item"><a href="../index.html?cat=popular">Popular</a></li>
@@ -34,7 +34,7 @@
 
           <li class="nav-item">
             <a href="series.html" class="nav-link activo">
-              📺 Series de TV
+              Series de TV
             </a>
             <ul class="dropdown-menu">
               <li class="dropdown-item"><a href="#" data-cat="popular">Popular</a></li>
@@ -46,7 +46,7 @@
 
           <li class="nav-item">
             <a href="personas.html" class="nav-link">
-              👥 Personas
+              Personas
             </a>
             <ul class="dropdown-menu">
               <li class="dropdown-item"><a href="personas.html">Personas populares</a></li>
@@ -55,7 +55,7 @@
 
           <li class="nav-item">
             <a href="awards.html" class="nav-link">
-              🏆 Awards
+              Awards
             </a>
             <ul class="dropdown-menu">
               <li class="dropdown-item"><a href="awards.html">Galardones y Destacados</a></li>
@@ -66,7 +66,7 @@
     </div>
   </header>
 
-  <!-- HERO / BANNER -->
+  <!-- HERO / BANNER CINEMÁTICO -->
   <section class="hero-seccion">
     <div class="hero-contenido">
       <h1 class="hero-titulo">Catálogo de Series de TV</h1>
@@ -74,10 +74,10 @@
       
       <!-- SUB-CATEGORÍAS DE SERIES DE TV -->
       <div class="subcategorias-bar" id="subcats-series">
-        <button class="subcat-btn activo" data-cat="popular">🔥 Populares</button>
-        <button class="subcat-btn" data-cat="airing_today">📺 Transmitiéndose Hoy</button>
-        <button class="subcat-btn" data-cat="on_the_air">📡 En Televisión</button>
-        <button class="subcat-btn" data-cat="top_rated">⭐ Mejor Calificadas</button>
+        <button class="subcat-btn activo" data-cat="popular">Populares</button>
+        <button class="subcat-btn" data-cat="airing_today">Transmitiéndose Hoy</button>
+        <button class="subcat-btn" data-cat="on_the_air">En Televisión</button>
+        <button class="subcat-btn" data-cat="top_rated">Mejor Calificadas</button>
       </div>
     </div>
   </section>
@@ -87,7 +87,7 @@
     
     <!-- Botón Toggle Filtros Móvil -->
     <button type="button" id="btn-toggle-filtros-movil" class="toggle-filtros-btn">
-      🎛️ Mostrar / Ocultar Filtros Avanzados
+      Mostrar / Ocultar Filtros Avanzados
     </button>
 
     <div class="layout-con-sidebar">
@@ -111,14 +111,14 @@
               autocomplete="off"
             >
             <button type="submit" class="btn-buscar" title="Buscar">
-              🔍
+              Buscar
             </button>
           </form>
         </div>
 
         <!-- REJILLA DE SERIES -->
         <div id="grid-series" class="grid-contenido">
-          <div class="cargando-spinner">📺 Cargando series de televisión...</div>
+          <div class="cargando-spinner">Cargando series de televisión...</div>
         </div>
 
         <!-- SECCIÓN DE PAGINACIÓN -->
@@ -134,15 +134,15 @@
   <footer class="footer-principal">
     <div class="footer-contenido">
       <div class="footer-info">
-        <h4>TMDB Explorer</h4>
+        <h4>CineVerse Explorer</h4>
         <p>Aplicación desarrollada con Vanilla JavaScript consumiendo la API de TMDB (HTTP GET /discover).</p>
       </div>
       <div>
-        <img src="../media/logo.svg" alt="TMDB Logo" style="height: 32px;">
+        <img src="../media/logo.svg" alt="CineVerse Logo" style="height: 32px;">
       </div>
     </div>
     <div class="footer-copy">
-      <p>&copy; 2026 TMDB Explorer - Práctica de Desarrollo Web</p>
+      <p>&copy; 2026 CineVerse Explorer - Práctica de Desarrollo Web</p>
     </div>
   </footer>
 
