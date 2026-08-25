@@ -65,7 +65,7 @@ async function cargarPeliculas() {
 
   // Renderizar tarjetas de películas
   gridPeliculas.innerHTML = data.results
-    .map(pelicula => crearTarjetaMedia(pelicula, true, false, true))
+    .map(pelicula => crearTarjetaMedia(pelicula, true, false, false))
     .join('');
 
   // Renderizar la paginación
