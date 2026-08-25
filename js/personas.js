@@ -66,8 +66,7 @@ async function cargarPersonas() {
 
 // Escuchadores de eventos
 document.addEventListener('DOMContentLoaded', () => {
-  // Inicializar pantalla de bienvenida estilo Netflix
-  inicializarPantallaBienvenida(false);
+  // Pantalla de bienvenida removida de aquí (solo en home)
 
   cargarPersonas();
 

@@ -49,6 +49,8 @@ async function cargarPopular(type = 'movie') {
 
 // Inicialización de eventos
 document.addEventListener('DOMContentLoaded', () => {
+  // Inicializar Pantalla de Inicio / Bienvenida estilo Netflix
+  inicializarPantallaBienvenida(true);
   
   // Cargar por defecto
   cargarTendencias('day');

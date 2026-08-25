@@ -129,8 +129,7 @@ function cambiarCategoria(nuevaCategoria) {
 
 // Inicialización de eventos
 document.addEventListener('DOMContentLoaded', () => {
-  // Inicializar Pantalla de Inicio / Bienvenida estilo Netflix (se resetea al recargar)
-  inicializarPantallaBienvenida(true);
+  // Se removió inicializarPantallaBienvenida de aquí, ahora va en home.js
 
   const params = new URLSearchParams(window.location.search);
   const searchUrl = params.get('search');

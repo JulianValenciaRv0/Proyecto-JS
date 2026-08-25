@@ -129,8 +129,7 @@ function cambiarCategoria(nuevaCategoria) {
 
 // Inicialización de eventos
 document.addEventListener('DOMContentLoaded', () => {
-  // Inicializar pantalla de bienvenida estilo Netflix
-  inicializarPantallaBienvenida(false);
+  // Pantalla de bienvenida removida de aquí (solo en home)
 
   // Verificar si viene una categoría por URL (?cat=...)
   const params = new URLSearchParams(window.location.search);

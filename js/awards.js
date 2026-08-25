@@ -138,8 +138,7 @@ function cambiarTipoAward(nuevoTipo) {
 
 // Inicialización
 document.addEventListener('DOMContentLoaded', () => {
-  // Inicializar pantalla de bienvenida estilo Netflix
-  inicializarPantallaBienvenida(false);
+  // Pantalla de bienvenida removida de aquí (solo en home)
 
   inicializarFiltros();
   cargarAwards();
