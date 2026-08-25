@@ -132,6 +132,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // Inicializar Pantalla de Inicio / Bienvenida estilo Netflix (se resetea al recargar)
   inicializarPantallaBienvenida(true);
 
+  const params = new URLSearchParams(window.location.search);
+  const searchUrl = params.get('search');
+  if (searchUrl) {
+    busquedaActual = searchUrl;
+    inputBuscar.value = searchUrl;
+  }
+
   inicializarFiltros();
   cargarPeliculas();
 

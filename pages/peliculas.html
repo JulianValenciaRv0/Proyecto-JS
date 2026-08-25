@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Películas - CineVerse Explorer</title>
+  <meta name="description" content="Explora las películas más populares, en cartelera, próximos estrenos y mejor calificadas en CineVerse.">
+  
+  <!-- Estilos Globales Cinematográficos -->
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- HEADER PRINCIPAL -->
+  <header class="header-principal">
+    <div class="header-container">
+      <a href="../index.html" class="logo-container" title="Inicio CineVerse Explorer">
+        <img src="../media/logo.svg" alt="CineVerse Logo" class="logo-img">
+      </a>
+
+      <nav class="nav-principal">
+        <ul class="nav-lista">
+          <li class="nav-item">
+            <a href="peliculas.html" class="nav-link activo">
+              Películas
+            </a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item"><a href="#" data-cat="popular">Popular</a></li>
+              <li class="dropdown-item"><a href="#" data-cat="now_playing">En cartelera</a></li>
+              <li class="dropdown-item"><a href="#" data-cat="upcoming">Próximamente</a></li>
+              <li class="dropdown-item"><a href="#" data-cat="top_rated">Mejor calificadas</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="series.html" class="nav-link">
+              Series de TV
+            </a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item"><a href="series.html?cat=popular">Popular</a></li>
+              <li class="dropdown-item"><a href="series.html?cat=airing_today">Transmitiéndose hoy</a></li>
+              <li class="dropdown-item"><a href="series.html?cat=on_the_air">En televisión</a></li>
+              <li class="dropdown-item"><a href="series.html?cat=top_rated">Mejor calificadas</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="personas.html" class="nav-link">
+              Personas
+            </a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item"><a href="personas.html">Personas populares</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="awards.html" class="nav-link">
+              Awards
+            </a>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item"><a href="awards.html">Galardones y Destacados</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO / BANNER CINEMÁTICO -->
+  <section class="hero-seccion">
+    <div class="hero-contenido">
+      <h1 class="hero-titulo">Catálogo de Películas</h1>
+      <p class="hero-subtitulo">Millones de películas por descubrir. Filtra por géneros, fechas, calificaciones e idioma.</p>
+      
+      <!-- SUB-CATEGORÍAS DE PELÍCULAS -->
+      <div class="subcategorias-bar" id="subcats-peliculas">
+        <button class="subcat-btn activo" data-cat="popular">Populares</button>
+        <button class="subcat-btn" data-cat="now_playing">En Cartelera</button>
+        <button class="subcat-btn" data-cat="upcoming">Próximamente</button>
+        <button class="subcat-btn" data-cat="top_rated">Mejor Calificadas</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTENIDO PRINCIPAL CON SIDEBAR DE FILTROS -->
+  <main class="contenedor-principal">
+    
+    <!-- Botón Toggle Filtros Móvil -->
+    <button type="button" id="btn-toggle-filtros-movil" class="toggle-filtros-btn">
+      Mostrar / Ocultar Filtros Avanzados
+    </button>
+
+    <div class="layout-con-sidebar">
+      
+      <!-- SIDEBAR LATERAL DE FILTROS AVANZADOS -->
+      <aside id="sidebar-filtros-container" class="sidebar-filtros">
+        <!-- Renderizado dinámico desde render.js -->
+      </aside>
+
+      <!-- CONTENIDO DERECHA (Buscador, Rejilla de Películas y Paginación) -->
+      <section class="zona-contenido">
+        
+        <!-- BARRA DE BÚSQUEDA RÁPIDA -->
+        <div class="barra-busqueda-wrapper">
+          <form class="grupo-buscar" id="form-buscar">
+            <input 
+              type="text" 
+              id="input-buscar" 
+              class="input-buscar" 
+              placeholder="Buscar película por título..." 
+              autocomplete="off"
+            >
+            <button type="submit" class="btn-buscar" title="Buscar">
+              Buscar
+            </button>
+          </form>
+        </div>
+
+        <!-- REJILLA DE PELÍCULAS -->
+        <div id="grid-peliculas" class="grid-contenido">
+          <div class="cargando-spinner">Cargando catálogo de películas...</div>
+        </div>
+
+        <!-- SECCIÓN DE PAGINACIÓN -->
+        <div id="contenedor-paginacion"></div>
+
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER PRINCIPAL -->
+  <footer class="footer-principal">
+    <div class="footer-contenido">
+      <div class="footer-info">
+        <h4>CineVerse Explorer</h4>
+        <p>Aplicación desarrollada con Vanilla JavaScript consumiendo la API de TMDB (HTTP GET /discover).</p>
+      </div>
+      <div>
+        <img src="../media/logo.svg" alt="CineVerse Logo" style="height: 32px;">
+      </div>
+    </div>
+    <div class="footer-copy">
+      <p>&copy; 2026 CineVerse Explorer - Práctica de Desarrollo Web</p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS MODULARES -->
+  <script src="../js/config.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/render.js"></script>
+  <script src="../js/peliculas.js"></script>
+</body>
+</html>
