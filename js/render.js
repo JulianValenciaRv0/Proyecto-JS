@@ -39,8 +39,12 @@ function crearTarjetaMedia(item, esPelicula = true, esAward = false, isRoot = fa
     </div>
   ` : '';
 
+  const type = esPelicula ? 'movie' : 'tv';
+  const enlaceBase = isRoot ? 'pages/detalles.html' : 'detalles.html';
+
   return `
-    <article class="tarjeta-media">
+    <a href="${enlaceBase}?id=${item.id}&type=${type}" class="tarjeta-link-wrapper" style="text-decoration: none; color: inherit; display: block;">
+      <article class="tarjeta-media">
       ${badgeAwardHTML}
       <div class="poster-wrapper">
         <img 
@@ -60,6 +64,7 @@ function crearTarjetaMedia(item, esPelicula = true, esAward = false, isRoot = fa
         <p class="tarjeta-resumen">${item.overview || 'Sin descripción disponible en este momento.'}</p>
       </div>
     </article>
+    </a>
   `;
 }
 
@@ -72,8 +77,11 @@ function crearTarjetaPersona(persona, isRoot = false) {
     ? persona.known_for.map(m => m.title || m.name).filter(Boolean).join(', ')
     : 'No especificado';
 
+  const enlaceBase = isRoot ? 'pages/detalles.html' : 'detalles.html';
+
   return `
-    <article class="tarjeta-persona">
+    <a href="${enlaceBase}?id=${persona.id}&type=person" class="tarjeta-link-wrapper" style="text-decoration: none; color: inherit; display: block;">
+      <article class="tarjeta-persona">
       <div class="poster-wrapper">
         <img 
           src="${fotoUrl}" 
@@ -88,6 +96,7 @@ function crearTarjetaPersona(persona, isRoot = false) {
         <p class="persona-conocido">Conocido por: ${trabajos}</p>
       </div>
     </article>
+    </a>
   `;
 }
 
