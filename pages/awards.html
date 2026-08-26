@@ -4,10 +4,92 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Awards & Galardones - CineVerse Explorer</title>
-  <meta name="description" content="Sección exclusiva con las películas y series más premiadas, mejor calificadas y aclamadas de CineVerse.">
+  <meta name="description" content="Descubre los principales premios y galardones del cine y la televisión.">
   
-  <!-- Estilos Globales Cinematográficos -->
   <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .awards-list-container {
+      max-width: 1000px;
+      margin: 0 auto 4rem auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    
+    .award-card-item {
+      display: flex;
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      border: var(--border-glass);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-glass);
+      transition: var(--transition);
+      cursor: pointer;
+      text-decoration: none;
+      color: white;
+    }
+
+    .award-card-item:hover {
+      transform: translateY(-5px);
+      border-color: var(--neon-gold);
+      box-shadow: 0 10px 30px rgba(245, 158, 11, 0.2);
+    }
+
+    .award-card-img-container {
+      width: 180px;
+      background: rgba(255, 255, 255, 0.03);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      border-right: var(--border-glass);
+    }
+
+    .award-card-img-container h2 {
+      font-size: 4rem;
+      margin: 0;
+      color: var(--neon-gold);
+      text-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+    }
+
+    .award-card-content {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex: 1;
+    }
+
+    .award-card-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      color: white;
+    }
+
+    .award-card-desc {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    @media (max-width: 600px) {
+      .award-card-item {
+        flex-direction: column;
+      }
+      .award-card-img-container {
+        width: 100%;
+        border-right: none;
+        border-bottom: var(--border-glass);
+        padding: 2rem;
+      }
+      .award-card-content {
+        padding: 1.5rem;
+        text-align: center;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -20,47 +102,10 @@
 
       <nav class="nav-principal">
         <ul class="nav-lista">
-          <li class="nav-item">
-            <a href="peliculas.html" class="nav-link">
-              Películas
-            </a>
-            <ul class="dropdown-menu">
-              <li class="dropdown-item"><a href="peliculas.html?cat=popular">Popular</a></li>
-              <li class="dropdown-item"><a href="peliculas.html?cat=now_playing">En cartelera</a></li>
-              <li class="dropdown-item"><a href="peliculas.html?cat=upcoming">Próximamente</a></li>
-              <li class="dropdown-item"><a href="peliculas.html?cat=top_rated">Mejor calificadas</a></li>
-            </ul>
-          </li>
-
-          <li class="nav-item">
-            <a href="series.html" class="nav-link">
-              Series de TV
-            </a>
-            <ul class="dropdown-menu">
-              <li class="dropdown-item"><a href="series.html?cat=popular">Popular</a></li>
-              <li class="dropdown-item"><a href="series.html?cat=airing_today">Transmitiéndose hoy</a></li>
-              <li class="dropdown-item"><a href="series.html?cat=on_the_air">En televisión</a></li>
-              <li class="dropdown-item"><a href="series.html?cat=top_rated">Mejor calificadas</a></li>
-            </ul>
-          </li>
-
-          <li class="nav-item">
-            <a href="personas.html" class="nav-link">
-              Personas
-            </a>
-            <ul class="dropdown-menu">
-              <li class="dropdown-item"><a href="personas.html">Personas populares</a></li>
-            </ul>
-          </li>
-
-          <li class="nav-item">
-            <a href="awards.html" class="nav-link activo">
-              Awards
-            </a>
-            <ul class="dropdown-menu">
-              <li class="dropdown-item"><a href="awards.html">Galardones y Destacados</a></li>
-            </ul>
-          </li>
+          <li class="nav-item"><a href="peliculas.html" class="nav-link">Películas</a></li>
+          <li class="nav-item"><a href="series.html" class="nav-link">Series de TV</a></li>
+          <li class="nav-item"><a href="personas.html" class="nav-link">Personas</a></li>
+          <li class="nav-item"><a href="awards.html" class="nav-link activo">Awards</a></li>
         </ul>
       </nav>
     </div>
@@ -69,64 +114,52 @@
   <!-- HERO / BANNER CINEMÁTICO -->
   <section class="hero-seccion">
     <div class="hero-contenido">
-      <h1 class="hero-titulo">Awards & Salón de la Fama</h1>
-      <p class="hero-subtitulo">Las obras maestras del cine y la televisión con las puntuaciones más elevadas e históricas.</p>
-      
-      <!-- SUB-CATEGORÍAS DE AWARDS -->
-      <div class="subcategorias-bar" id="subcats-awards">
-        <button class="subcat-btn activo" data-tipo="peliculas_top">Películas Aclamadas</button>
-        <button class="subcat-btn" data-tipo="series_top">Series Históricas</button>
-        <button class="subcat-btn" data-tipo="obras_maestras">Excelencia 8.5+</button>
-      </div>
+      <h1 class="hero-titulo" style="background: var(--grad-gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Premios y Galardones</h1>
+      <p class="hero-subtitulo">Explora las ceremonias más prestigiosas que celebran la excelencia en la industria del cine y la televisión.</p>
     </div>
   </section>
 
-  <!-- CONTENIDO PRINCIPAL CON SIDEBAR DE FILTROS -->
-  <main class="contenedor-principal">
-    
-    <!-- Botón Toggle Filtros Móvil -->
-    <button type="button" id="btn-toggle-filtros-movil" class="toggle-filtros-btn">
-      Mostrar / Ocultar Filtros Avanzados
-    </button>
-
-    <div class="layout-con-sidebar">
+  <!-- CONTENIDO PRINCIPAL (Lista de Awards estática) -->
+  <main class="contenedor-principal" style="max-width: 1200px;">
+    <div class="awards-list-container">
       
-      <!-- SIDEBAR LATERAL DE FILTROS AVANZADOS -->
-      <aside id="sidebar-filtros-container" class="sidebar-filtros">
-        <!-- Renderizado dinámico desde render.js -->
-      </aside>
-
-      <!-- CONTENIDO DERECHA (Buscador, Rejilla de Awards y Paginación) -->
-      <section class="zona-contenido">
-        
-        <!-- BARRA DE BÚSQUEDA RÁPIDA -->
-        <div class="barra-busqueda-wrapper">
-          <form class="grupo-buscar" id="form-buscar">
-            <input 
-              type="text" 
-              id="input-buscar" 
-              class="input-buscar" 
-              placeholder="Buscar producción en el Salón de la Fama..." 
-              autocomplete="off"
-            >
-            <button type="submit" class="btn-buscar" title="Buscar">
-              Buscar
-            </button>
-          </form>
+      <!-- Academy Awards (Oscars) -->
+      <a href="award_detalles.html?id=oscars" class="award-card-item">
+        <div class="award-card-img-container"><h2>🏆</h2></div>
+        <div class="award-card-content">
+          <h3 class="award-card-title">Academy Awards (Premios Óscar)</h3>
+          <p class="award-card-desc">Concedidos por la Academia de las Artes y las Ciencias Cinematográficas, son el máximo honor en la industria del cine, reconociendo la excelencia en logros cinematográficos.</p>
         </div>
+      </a>
 
-        <!-- REJILLA DE AWARDS -->
-        <div id="grid-awards" class="grid-contenido">
-          <div class="cargando-spinner">Cargando galardones y destacados...</div>
+      <!-- Golden Globes -->
+      <a href="award_detalles.html?id=golden_globes" class="award-card-item">
+        <div class="award-card-img-container"><h2>🌐</h2></div>
+        <div class="award-card-content">
+          <h3 class="award-card-title">Golden Globe Awards</h3>
+          <p class="award-card-desc">Otorgados por los miembros de la Asociación de la Prensa Extranjera de Hollywood, reconocen la excelencia tanto en cine estadounidense e internacional como en televisión.</p>
         </div>
+      </a>
 
-        <!-- SECCIÓN DE PAGINACIÓN -->
-        <div id="contenedor-paginacion"></div>
+      <!-- Emmy Awards -->
+      <a href="award_detalles.html?id=emmys" class="award-card-item">
+        <div class="award-card-img-container"><h2>📺</h2></div>
+        <div class="award-card-content">
+          <h3 class="award-card-title">Emmy Awards</h3>
+          <p class="award-card-desc">Reconocen la excelencia en la industria de la televisión. Equivalen a los Premios Óscar (cine), los Premios Tony (teatro) y los Premios Grammy (música).</p>
+        </div>
+      </a>
 
-      </section>
+      <!-- BAFTA -->
+      <a href="award_detalles.html?id=bafta" class="award-card-item">
+        <div class="award-card-img-container"><h2>🎭</h2></div>
+        <div class="award-card-content">
+          <h3 class="award-card-title">BAFTA Film Awards</h3>
+          <p class="award-card-desc">Presentados por la Academia Británica de las Artes Cinematográficas y de la Televisión para honrar las mejores contribuciones británicas e internacionales al cine.</p>
+        </div>
+      </a>
 
     </div>
-
   </main>
 
   <!-- FOOTER PRINCIPAL -->
@@ -134,7 +167,7 @@
     <div class="footer-contenido">
       <div class="footer-info">
         <h4>CineVerse Explorer</h4>
-        <p>Aplicación desarrollada con Vanilla JavaScript consumiendo la API de TMDB (HTTP GET /discover).</p>
+        <p>Aplicación desarrollada con Vanilla JavaScript (Interfaz simulada).</p>
       </div>
       <div>
         <img src="../media/logo.svg" alt="CineVerse Logo" style="height: 32px;">
@@ -145,10 +178,5 @@
     </div>
   </footer>
 
-  <!-- SCRIPTS MODULARES -->
-  <script src="../js/config.js"></script>
-  <script src="../js/api.js"></script>
-  <script src="../js/render.js"></script>
-  <script src="../js/awards.js"></script>
 </body>
 </html>
