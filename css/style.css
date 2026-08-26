@@ -296,6 +296,53 @@ a {
   background: radial-gradient(ellipse at top, rgba(121, 40, 202, 0.15) 0%, transparent 70%);
 }
 
+.home-banner {
+  position: relative;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  padding: 3.5rem 2rem;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-bottom: 2rem;
+}
+
+.home-banner-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(to right, rgba(9, 13, 22, 1) 0%, rgba(9, 13, 22, 0.6) 100%);
+  z-index: 1;
+}
+
+.home-banner-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.home-banner-content h2 {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  color: white;
+}
+
+.home-banner-content h3 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 2rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.home-search-wrapper {
+  margin: 0;
+  max-width: 100%;
+}
+
+
 .hero-contenido {
   max-width: 1000px;
   margin: 0 auto;
@@ -1153,4 +1200,82 @@ a {
     top: -40px;
     right: 0;
   }
+}
+
+/* ==========================================================================
+   PANEL TENDENCIAS & HORIZONTAL SCROLLER (HOME)
+   ========================================================================== */
+.panel-tendencias {
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.2rem;
+}
+
+.panel-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+}
+
+.toggle-group {
+  display: flex;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.toggle-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  padding: 0.4rem 1.2rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.toggle-btn.activo {
+  background: var(--grad-primary);
+  color: #090d16;
+}
+
+.horizontal-scroller {
+  display: flex;
+  gap: 1.2rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 1.5rem;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+}
+
+.horizontal-scroller::-webkit-scrollbar {
+  height: 8px;
+}
+
+.horizontal-scroller::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+}
+
+.horizontal-scroller::-webkit-scrollbar-thumb {
+  background: rgba(0, 223, 216, 0.5);
+  border-radius: 10px;
+}
+
+.horizontal-scroller::-webkit-scrollbar-thumb:hover {
+  background: var(--neon-cyan);
+}
+
+.horizontal-scroller .tarjeta-link-wrapper {
+  flex: 0 0 200px;
+  scroll-snap-align: start;
 }

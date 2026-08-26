@@ -7,10 +7,13 @@
 // Elementos del DOM
 const scrollerTendencias = document.querySelector('#scroller-tendencias');
 const scrollerPopular = document.querySelector('#scroller-popular');
+const scrollerGratis = document.querySelector('#scroller-gratis');
 const togglesTendencias = document.querySelectorAll('#toggle-tendencias .toggle-btn');
 const togglesPopular = document.querySelectorAll('#toggle-popular .toggle-btn');
+const togglesGratis = document.querySelectorAll('#toggle-gratis .toggle-btn');
 const formBuscarHome = document.querySelector('#form-buscar-home');
 const inputBuscarHome = document.querySelector('#input-buscar-home');
+const bannerDinamico = document.querySelector('#home-banner-dinamico');
 
 // Cargar Tendencias (Día o Semana)
 async function cargarTendencias(timeWindow = 'day') {
@@ -47,14 +50,54 @@ async function cargarPopular(type = 'movie') {
     .join('');
 }
 
+// Cargar Ver Gratis (Películas o Series con filtro de watch providers)
+async function cargarGratis(type = 'movie') {
+  scrollerGratis.innerHTML = '<div class="cargando-spinner">Cargando contenido gratuito...</div>';
+  
+  // Usamos discover para buscar contenido que tenga la opción free/ads en watch_monetization_types
+  const endpoint = type === 'movie' ? '/discover/movie' : '/discover/tv';
+  const data = await obtenerDatosAPI(endpoint, { 
+    with_watch_monetization_types: 'free|ads',
+    sort_by: 'popularity.desc'
+  });
+  
+  if (!data || !data.results || data.results.length === 0) {
+    scrollerGratis.innerHTML = '<div class="mensaje-vacio"><p>No se encontró contenido gratuito en este momento.</p></div>';
+    return;
+  }
+
+  scrollerGratis.innerHTML = data.results
+    .map(item => crearTarjetaMedia(item, type === 'movie', false, true))
+    .join('');
+}
+
+// Cargar imagen de fondo aleatoria para el banner
+async function cargarBannerAleatorio() {
+  if (!bannerDinamico) return;
+  // Obtenemos películas populares para usar como fondo
+  const data = await obtenerDatosAPI('/movie/popular');
+  if (data && data.results && data.results.length > 0) {
+    // Escoger una película aleatoria de los top 10
+    const randomIndex = Math.floor(Math.random() * 10);
+    const movie = data.results[randomIndex];
+    if (movie && movie.backdrop_path) {
+      const imgUrl = `${URL_IMAGEN}${movie.backdrop_path}`;
+      // Aplicar como background image en el style del elemento
+      bannerDinamico.style.backgroundImage = `url('${imgUrl}')`;
+    }
+  }
+}
+
 // Inicialización de eventos
 document.addEventListener('DOMContentLoaded', () => {
   // Inicializar Pantalla de Inicio / Bienvenida estilo Netflix
   inicializarPantallaBienvenida(true);
   
   // Cargar por defecto
+  cargarBannerAleatorio();
   cargarTendencias('day');
   cargarPopular('movie');
+  cargarGratis('movie');
 
   // Eventos para Toggle de Tendencias
   togglesTendencias.forEach(btn => {
@@ -71,6 +114,15 @@ document.addEventListener('DOMContentLoaded', () => {
       togglesPopular.forEach(b => b.classList.remove('activo'));
       e.target.classList.add('activo');
       cargarPopular(e.target.dataset.type);
+    });
+  });
+
+  // Eventos para Toggle de Ver Gratis
+  togglesGratis.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      togglesGratis.forEach(b => b.classList.remove('activo'));
+      e.target.classList.add('activo');
+      cargarGratis(e.target.dataset.type);
     });
   });
 

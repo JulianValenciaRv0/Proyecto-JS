@@ -58,7 +58,8 @@
   </header>
 
   <!-- SECCIÓN BANNER DE BIENVENIDA -->
-  <section class="home-banner">
+  <section class="home-banner" id="home-banner-dinamico">
+    <div class="home-banner-overlay"></div>
     <div class="home-banner-content">
       <h2>Te damos la bienvenida.</h2>
       <h3>Millones de películas, programas de televisión y personas por descubrir. Explora ya.</h3>
@@ -107,6 +108,21 @@
       
       <div class="horizontal-scroller" id="scroller-popular">
         <div class="cargando-spinner">Cargando lo más popular...</div>
+      </div>
+    </section>
+
+    <!-- VER GRATIS -->
+    <section class="panel-tendencias" style="margin-bottom: 4rem;">
+      <div class="panel-header">
+        <h2>Ver gratis</h2>
+        <div class="toggle-group" id="toggle-gratis">
+          <button class="toggle-btn activo" data-type="movie">Películas</button>
+          <button class="toggle-btn" data-type="tv">TV</button>
+        </div>
+      </div>
+      
+      <div class="horizontal-scroller" id="scroller-gratis">
+        <div class="cargando-spinner">Cargando contenido gratuito...</div>
       </div>
     </section>
 
