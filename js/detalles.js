@@ -17,12 +17,20 @@ async function cargarDetalles() {
     return;
   }
 
-  // 1. Obtener datos principales y extra (credits, keywords, recommendations, videos, images, reviews)
+  // 1. Obtener datos principales y extra (credits, keywords, recommendations, videos, images)
   const appendParams = type === 'person' 
     ? 'combined_credits' 
-    : 'credits,keywords,recommendations,videos,images,reviews';
+    : 'credits,keywords,recommendations,videos,images';
 
   const data = await obtenerDatosAPI(`/${type}/${id}`, { append_to_response: appendParams });
+
+  // 1.5 Obtener reseñas (Reviews) sin filtro de idioma para garantizar que haya datos en Social
+  if (data && type !== 'person') {
+    const reviewsData = await obtenerDatosAPI(`/${type}/${id}/reviews`, { language: '' });
+    if (reviewsData) {
+      data.reviews = reviewsData;
+    }
+  }
 
   if (!data) {
     contenedorDetalles.innerHTML = '<div class="mensaje-vacio"><h3>Error al cargar los detalles.</h3></div>';
