@@ -939,3 +939,218 @@ a {
     font-size: 1.7rem;
   }
 }
+
+/* ==========================================================================
+   ESTILOS ADICIONALES PARA DETALLES (TRAILERS, MEDIA, SOCIAL)
+   ========================================================================== */
+
+/* Contenedor de Video (Responsive 16:9) */
+.video-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  height: 0;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+  border: var(--border-glass);
+  box-shadow: var(--shadow-glass);
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Tarjetas de Reseñas (Reviews) */
+.review-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: var(--border-glass);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-glass);
+  margin-bottom: 1.5rem;
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.review-author-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: var(--neon-cyan);
+  border: 2px solid var(--neon-cyan);
+}
+
+.review-author-info h4 {
+  margin: 0;
+  font-size: 1rem;
+  color: white;
+}
+
+.review-author-info p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.review-rating-badge {
+  background: rgba(255,255,255,0.1);
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: var(--score-yellow);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.review-content {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-main);
+  max-height: 150px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.review-content::-webkit-scrollbar {
+  width: 6px;
+}
+.review-content::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.1);
+}
+.review-content::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 4px;
+}
+
+/* Media Images (Posters y Backdrops) */
+.media-image-card {
+  min-width: 250px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: var(--border-glass);
+  background: var(--bg-card);
+  transition: var(--transition);
+}
+
+.media-image-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--neon-purple);
+  box-shadow: 0 5px 15px rgba(121, 40, 202, 0.4);
+}
+
+.media-image-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ==========================================================================
+   MODAL DE TRAILER
+   ========================================================================== */
+.btn-ver-trailer {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 0.8rem 1.5rem;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: var(--transition);
+  backdrop-filter: blur(10px);
+}
+
+.btn-ver-trailer:hover {
+  background: white;
+  color: #090d16;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  transform: scale(1.05);
+}
+
+.trailer-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.trailer-modal-overlay.activo {
+  opacity: 1;
+  visibility: visible;
+}
+
+.trailer-modal-content {
+  width: 90%;
+  max-width: 900px;
+  background: var(--bg-dark);
+  border: 1px solid rgba(0, 223, 216, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 223, 216, 0.15);
+  position: relative;
+  transform: scale(0.9);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.trailer-modal-overlay.activo .trailer-modal-content {
+  transform: scale(1);
+}
+
+.btn-cerrar-modal {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  background: transparent;
+  color: white;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-cerrar-modal:hover {
+  color: var(--neon-pink);
+  transform: scale(1.1);
+}
+
+@media (max-width: 992px) {
+  .btn-cerrar-modal {
+    top: -40px;
+    right: 0;
+  }
+}

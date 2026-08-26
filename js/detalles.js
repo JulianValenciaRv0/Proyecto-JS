@@ -17,10 +17,10 @@ async function cargarDetalles() {
     return;
   }
 
-  // 1. Obtener datos principales y extra (credits, keywords, recommendations)
+  // 1. Obtener datos principales y extra (credits, keywords, recommendations, videos, images, reviews)
   const appendParams = type === 'person' 
     ? 'combined_credits' 
-    : 'credits,keywords,recommendations';
+    : 'credits,keywords,recommendations,videos,images,reviews';
 
   const data = await obtenerDatosAPI(`/${type}/${id}`, { append_to_response: appendParams });
 
@@ -128,6 +128,65 @@ function renderDetallesMedia(data, type) {
       <p style="margin: 0 0 15px 0; font-size:0.95rem;">${data.networks ? data.networks.map(n => n.name).join(', ') : '-'}</p>
     `;
   }
+
+  // Trailers
+  const trailers = data.videos?.results ? data.videos.results.filter(v => v.site === 'YouTube').slice(0, 5) : [];
+  const trailersHTML = trailers.map(v => `
+    <div style="min-width: 320px; max-width: 400px; flex-shrink: 0;">
+      <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/${v.key}" title="${v.name}" allowfullscreen></iframe>
+      </div>
+      <p style="margin-top: 8px; font-weight: 600; font-size: 0.9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${v.name}">${v.name}</p>
+    </div>
+  `).join('');
+
+  // Media (Backdrops)
+  const backdrops = data.images?.backdrops ? data.images.backdrops.slice(0, 8) : [];
+  const mediaHTML = backdrops.map(img => `
+    <div class="media-image-card" style="width: 300px; height: 169px;">
+      <img src="https://image.tmdb.org/t/p/w500${img.file_path}" alt="Media Backdrop" loading="lazy">
+    </div>
+  `).join('');
+
+  // Social (Reviews)
+  const reviews = data.reviews?.results ? data.reviews.results.slice(0, 4) : [];
+  const reviewsHTML = reviews.map(r => {
+    let avatarUrl = '';
+    if (r.author_details?.avatar_path) {
+      if (r.author_details.avatar_path.startsWith('/')) {
+        avatarUrl = `${URL_IMAGEN}${r.author_details.avatar_path}`;
+      } else {
+        avatarUrl = r.author_details.avatar_path.substring(1); // Quitar slash si viene codificado de gravatar
+        if (!avatarUrl.startsWith('http')) avatarUrl = ''; // fallback
+      }
+    }
+      
+    const avatarContent = avatarUrl 
+      ? `<img src="${avatarUrl}" alt="${r.author}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" onerror="this.style.display='none'">`
+      : `${r.author.charAt(0).toUpperCase()}`;
+      
+    const ratingHtml = r.author_details?.rating 
+      ? `<div class="review-rating-badge">⭐ ${r.author_details.rating}.0</div>` 
+      : '';
+
+    return `
+      <div class="review-card">
+        <div class="review-header">
+          <div class="review-author-avatar">
+            ${avatarContent}
+          </div>
+          <div class="review-author-info">
+            <h4>Una reseña de ${r.author}</h4>
+            <p>Escrita por ${r.author} el ${formatearFecha(r.created_at)}</p>
+          </div>
+          ${ratingHtml}
+        </div>
+        <div class="review-content">
+          ${r.content.replace(/\n/g, '<br>')}
+        </div>
+      </div>
+    `;
+  }).join('');
   
   contenedorDetalles.innerHTML = `
     <!-- HEADER TMDB STYLE -->
@@ -144,11 +203,19 @@ function renderDetallesMedia(data, type) {
             ${formatearFecha(fecha)} &bull; ${generos} ${duracion ? `&bull; ${duracion}` : ''}
           </p>
 
-          <div style="display:flex; align-items:center; gap: 1rem; margin-bottom: 1.5rem;">
-            <div style="background:var(--bg-card); width: 60px; height: 60px; border-radius: 50%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size: 1.3rem; border: 4px solid var(--neon-cyan);">
-              ${calificacion}<span style="font-size:0.6rem;">%</span>
+          <div style="display:flex; align-items:center; gap: 1.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+            <div style="display:flex; align-items:center; gap: 1rem;">
+              <div style="background:var(--bg-card); width: 60px; height: 60px; border-radius: 50%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size: 1.3rem; border: 4px solid var(--neon-cyan);">
+                ${calificacion}<span style="font-size:0.6rem;">%</span>
+              </div>
+              <span style="font-weight:bold;">Puntuación de<br>usuario</span>
             </div>
-            <span style="font-weight:bold;">Puntuación de<br>usuario</span>
+            
+            ${trailers.length > 0 ? `
+              <button onclick="abrirTrailerModal('${trailers[0].key}')" class="btn-ver-trailer">
+                ▶ Reproducir Tráiler
+              </button>
+            ` : ''}
           </div>
 
           <p style="font-style: italic; opacity:0.8; font-size: 1.1rem; margin-bottom:10px;">${data.tagline || ''}</p>
@@ -174,8 +241,36 @@ function renderDetallesMedia(data, type) {
           ${castHTML || '<p>Reparto no disponible.</p>'}
         </div>
 
+        <!-- Media (Trailers) -->
+        ${trailers.length > 0 ? `
+          <hr style="border: 0; border-top: 1px solid var(--border-glass); margin: 2rem 0;">
+          <h2 style="margin-bottom: 1rem;">Trailers y Videos</h2>
+          <div style="display:flex; gap: 1rem; overflow-x: auto; padding-bottom: 1rem; margin-bottom: 2rem;" class="horizontal-scroller-simple">
+            ${trailersHTML}
+          </div>
+        ` : ''}
+        
+        <!-- Media (Imágenes) -->
+        ${backdrops.length > 0 ? `
+          <hr style="border: 0; border-top: 1px solid var(--border-glass); margin: 2rem 0;">
+          <h2 style="margin-bottom: 1rem;">Imágenes (Media)</h2>
+          <div style="display:flex; gap: 1rem; overflow-x: auto; padding-bottom: 1rem; margin-bottom: 2rem;" class="horizontal-scroller-simple">
+            ${mediaHTML}
+          </div>
+        ` : ''}
+
+        <!-- Social (Reseñas) -->
+        ${reviews.length > 0 ? `
+          <hr style="border: 0; border-top: 1px solid var(--border-glass); margin: 2rem 0;">
+          <h2 style="margin-bottom: 1rem;">Social - Reseñas</h2>
+          <div style="margin-bottom: 2rem;">
+            ${reviewsHTML}
+            ${data.reviews?.total_results > 4 ? `<p style="font-weight: 600; cursor: pointer; color: var(--neon-cyan);">Ver las ${data.reviews.total_results} reseñas</p>` : ''}
+          </div>
+        ` : ''}
+
         <!-- Recomendaciones -->
-        <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 2rem 0;">
+        <hr style="border: 0; border-top: 1px solid var(--border-glass); margin: 2rem 0;">
         <h2 style="margin-bottom: 1rem;">Recomendaciones</h2>
         <div style="display:flex; gap: 1rem; overflow-x: auto; padding-bottom: 1rem; margin-bottom: 2rem;" class="horizontal-scroller-simple">
           ${recsHTML || '<p>No tenemos suficientes datos para sugerir recomendaciones.</p>'}
@@ -202,8 +297,48 @@ function renderDetallesMedia(data, type) {
         </div>
       </div>
     </div>
+
+    <!-- MODAL TRAILER -->
+    <div id="trailer-modal" class="trailer-modal-overlay" onclick="cerrarTrailerModal(event)">
+      <div class="trailer-modal-content">
+        <button class="btn-cerrar-modal" onclick="cerrarTrailerModal()">✕</button>
+        <div class="video-container" id="trailer-modal-video">
+          <!-- El iframe se inyecta dinámicamente -->
+        </div>
+      </div>
+    </div>
   `;
 }
+
+// Funciones para el Modal del Trailer
+window.abrirTrailerModal = function(videoKey) {
+  const modal = document.getElementById('trailer-modal');
+  const videoContainer = document.getElementById('trailer-modal-video');
+  
+  if (modal && videoContainer) {
+    videoContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoKey}?autoplay=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    modal.classList.add('activo');
+    document.body.style.overflow = 'hidden'; // Evitar scroll de fondo
+  }
+};
+
+window.cerrarTrailerModal = function(event) {
+  if (event && event.target !== document.getElementById('trailer-modal') && event.type === 'click') {
+    // Si el clic fue dentro del modal pero no en el overlay, no hacer nada (a menos que sea el botón cerrar)
+    if (!event.target.classList.contains('btn-cerrar-modal') && !event.target.classList.contains('trailer-modal-overlay')) {
+       return;
+    }
+  }
+
+  const modal = document.getElementById('trailer-modal');
+  const videoContainer = document.getElementById('trailer-modal-video');
+  
+  if (modal && videoContainer) {
+    modal.classList.remove('activo');
+    videoContainer.innerHTML = ''; // Detener video
+    document.body.style.overflow = ''; // Restaurar scroll
+  }
+};
 
 function renderDetallesPersona(data) {
   const fotoUrl = data.profile_path ? `${URL_IMAGEN}${data.profile_path}` : URL_PLACEHOLDER;
