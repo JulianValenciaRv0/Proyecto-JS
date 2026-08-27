@@ -46,7 +46,8 @@ rooms.forEach(room => {
 // 519182: Despicable Me 4
 // 718821: Twisters
 // 1226578: Longlegs
-const movieIds = [533535, 1022789, 519182, 718821, 1226578];
+// 1083381: La señal del apocalipsis (maybe)
+const movieIds = [533535, 1022789, 519182, 718821, 1226578, 969681, 1368337, 1288445, 1323244, 1621552, 1084244, 1339713, 1108427, 634649, 1315772];
 const functions = [];
 const functionSeats = [];
 let functionId = 1;
@@ -98,17 +99,15 @@ movieIds.forEach((movieId, index) => {
 });
 
 // 4. Crear functionSeats (Disponibilidad de asientos por función)
-// Inicialmente todos están 'available', pondremos algunos aleatorios como ocupados
+// Inicialmente todos están 'available' (libres)
 functions.forEach(func => {
   const roomSeats = seats.filter(s => s.roomId === func.roomId);
   roomSeats.forEach(seat => {
-    // 15% de probabilidad de que esté ocupado aleatoriamente
-    const isOccupied = Math.random() < 0.15;
     functionSeats.push({
       id: functionSeatId++,
       functionId: func.id,
       seatId: seat.id,
-      status: isOccupied ? 'sold' : 'available'
+      status: 'available'
     });
   });
 });

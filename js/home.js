@@ -81,9 +81,19 @@ async function cargarBannerAleatorio() {
     const randomIndex = Math.floor(Math.random() * 10);
     const movie = data.results[randomIndex];
     if (movie && movie.backdrop_path) {
-      const imgUrl = `${URL_IMAGEN}${movie.backdrop_path}`;
+      const imgUrl = `https://image.tmdb.org/t/p/original${movie.backdrop_path}`;
       // Aplicar como background image en el style del elemento
       bannerDinamico.style.backgroundImage = `url('${imgUrl}')`;
+      
+      const titleEl = bannerDinamico.querySelector('h2');
+      const descEl = bannerDinamico.querySelector('p');
+      const linkEl = bannerDinamico.querySelector('a.btn-primary');
+      const scoreSpan = bannerDinamico.querySelector('.stars span');
+      
+      if (titleEl) titleEl.textContent = movie.title || movie.name;
+      if (descEl) descEl.textContent = movie.overview ? (movie.overview.substring(0, 200) + '...') : 'Sin descripción disponible.';
+      if (linkEl) linkEl.href = `pages/detalles.html?id=${movie.id}&type=movie`;
+      if (scoreSpan) scoreSpan.textContent = `${movie.vote_average.toFixed(1)} (TMDB)`;
     }
   }
 }

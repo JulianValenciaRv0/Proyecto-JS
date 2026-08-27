@@ -30,11 +30,48 @@ function inicializarNavegacionAuth() {
     
     if (userStr) {
         const user = JSON.parse(userStr);
+        // Determinamos si estamos en la raíz o en un subdirectorio para el link correcto
+        const isRoot = window.location.pathname.endsWith('index.html') || window.location.pathname === '/' || window.location.pathname.endsWith('Proyecto-JS/');
+        const reservasPath = isRoot ? 'pages/mis_reservas.html' : 'mis_reservas.html';
+
         // Usuario logueado
         authMenu.innerHTML = `
-            <span class="user-greeting">Hola, ${user.fullName}</span>
-            <button id="btnLogout" class="btn-logout">Cerrar sesión</button>
+            <div class="profile-dropdown">
+                <button class="profile-btn">
+                    <i class="fa-solid fa-circle-user"></i>
+                    <span>${user.fullName.split(' ')[0]}</span>
+                    <i class="fa-solid fa-chevron-down" style="font-size: 0.7rem; margin-left: 0.3rem;"></i>
+                </button>
+                <div class="dropdown-menu">
+                    <div class="dropdown-header">
+                        <span class="dropdown-name">${user.fullName}</span>
+                        <span class="dropdown-email">${user.email}</span>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <a href="${reservasPath}" class="dropdown-item">
+                        <i class="fa-solid fa-ticket"></i> Mis Reservas
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <button id="btnLogout" class="dropdown-item text-danger">
+                        <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+                    </button>
+                </div>
+            </div>
         `;
+        
+        const profileBtn = authMenu.querySelector('.profile-btn');
+        const dropdownMenu = authMenu.querySelector('.dropdown-menu');
+        
+        profileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('active');
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (!authMenu.contains(e.target)) {
+                dropdownMenu.classList.remove('active');
+            }
+        });
         
         document.getElementById('btnLogout').addEventListener('click', cerrarSesion);
     } else {

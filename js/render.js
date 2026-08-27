@@ -38,14 +38,12 @@ function crearTarjetaMedia(item, esPelicula = true, esAward = false, isRoot = fa
       Honor CineVerse
     </div>
   ` : '';
-
   const type = esPelicula ? 'movie' : 'tv';
   const enlaceBase = isRoot ? 'pages/detalles.html' : 'detalles.html';
 
   return `
     <a href="${enlaceBase}?id=${item.id}&type=${type}" class="tarjeta-link-wrapper" style="text-decoration: none; color: inherit; display: block;">
       <article class="tarjeta-media">
-      ${badgeAwardHTML}
       <div class="poster-wrapper">
         <img 
           src="${posterUrl}" 
@@ -54,14 +52,14 @@ function crearTarjetaMedia(item, esPelicula = true, esAward = false, isRoot = fa
           loading="lazy"
           onerror="this.onerror=null; this.src='${placeholder}';"
         >
-        <div class="badge-puntuacion ${claseCalificacion}">
-          ${calificacion}
-        </div>
       </div>
       <div class="tarjeta-info">
+        <div class="stars-rating">
+          <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star" style="color: rgba(255,255,255,0.2);"></i>
+          <span class="score-text">${calificacion}</span>
+        </div>
         <h3 class="tarjeta-titulo" title="${titulo || ''}">${titulo || 'Título no disponible'}</h3>
-        <span class="tarjeta-fecha">Estreno: ${formatearFecha(fecha)}</span>
-        <p class="tarjeta-resumen">${item.overview || 'Sin descripción disponible en este momento.'}</p>
+        <span class="tarjeta-fecha">${formatearFecha(fecha)}</span>
       </div>
     </article>
     </a>
@@ -261,6 +259,11 @@ function renderSidebarFiltros(contenedor, esPelicula = true, generos = [], onApl
  * Se muestra siempre al cargar o recargar la página (F5).
  */
 function inicializarPantallaBienvenida(isRoot = true) {
+  // Verificar si ya vio la intro en esta sesión
+  if (sessionStorage.getItem('cineverse_intro_seen') === 'true') {
+    return;
+  }
+
   const logoPath = isRoot ? 'media/logo.svg' : '../media/logo.svg';
 
   // Si no existe en el DOM, la creamos
@@ -291,6 +294,8 @@ function inicializarPantallaBienvenida(isRoot = true) {
   if (btnExplorar) {
     btnExplorar.addEventListener('click', () => {
       overlay.classList.add('oculto');
+      // Guardar en sessionStorage para que no vuelva a salir al navegar
+      sessionStorage.setItem('cineverse_intro_seen', 'true');
     });
   }
 }

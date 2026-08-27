@@ -5,36 +5,36 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
 
 :root {
-  --bg-dark: #090d16;
-  --bg-card: rgba(18, 26, 43, 0.7);
-  --bg-card-hover: rgba(28, 39, 64, 0.85);
-  --bg-sidebar: rgba(13, 19, 33, 0.85);
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
+  --bg-dark: #050505;
+  --bg-card: #0f0f0f;
+  --bg-card-hover: #1a1a1a;
+  --bg-sidebar: #0a0a0a;
+  --text-main: #ffffff;
+  --text-muted: #888888;
   --text-dim: #64748b;
   
-  --neon-cyan: #00DFD8;
-  --neon-blue: #007CF0;
-  --neon-purple: #7928CA;
-  --neon-pink: #FF0080;
-  --neon-gold: #F59E0B;
+  --neon-cyan: #007bff;
+  --neon-blue: #1e90ff;
+  --neon-purple: #007bff;
+  --neon-pink: #1e90ff;
+  --neon-gold: #ffb400;
   
   --grad-primary: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-blue) 100%);
-  --grad-accent: linear-gradient(135deg, var(--neon-purple) 0%, var(--neon-pink) 100%);
-  --grad-gold: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  --grad-accent: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-blue) 100%);
+  --grad-gold: linear-gradient(135deg, #ffb400 0%, #f39c12 100%);
 
   --score-green: #10B981;
-  --score-yellow: #F59E0B;
+  --score-yellow: #ffb400;
   --score-red: #EF4444;
 
-  --border-glass: 1px solid rgba(255, 255, 255, 0.08);
-  --border-radius: 16px;
-  --radius-sm: 10px;
+  --border-glass: 1px solid rgba(255, 255, 255, 0.05);
+  --border-radius: 12px;
+  --radius-sm: 6px;
 
-  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  --shadow-neon: 0 0 25px rgba(0, 223, 216, 0.3);
+  --shadow-glass: 0 4px 20px rgba(0, 0, 0, 0.5);
+  --shadow-neon: 0 5px 15px rgba(0, 123, 255, 0.3);
 
-  --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition: all 0.3s ease;
 }
 
 /* Reset y Estilos Globales */
@@ -47,12 +47,8 @@
 body {
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   background-color: var(--bg-dark);
-  background-image: 
-    radial-gradient(circle at 15% 15%, rgba(121, 40, 202, 0.12) 0%, transparent 40%),
-    radial-gradient(circle at 85% 85%, rgba(0, 223, 216, 0.1) 0%, transparent 45%);
-  background-attachment: fixed;
   color: var(--text-main);
-  line-height: 1.5;
+  line-height: 1.6;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -675,24 +671,18 @@ a {
 
 /* Tarjeta Media (Película / Serie) */
 .tarjeta-media {
-  background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: var(--border-glass);
-  border-radius: var(--border-radius);
-  overflow: hidden;
-  box-shadow: var(--shadow-glass);
-  transition: var(--transition);
   display: flex;
   flex-direction: column;
-  position: relative;
+  height: 100%;
+  border-radius: var(--border-radius);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  background: transparent;
 }
 
-.tarjeta-media:hover {
-  transform: translateY(-8px) scale(1.02);
-  background: var(--bg-card-hover);
-  border-color: rgba(0, 223, 216, 0.3);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 223, 216, 0.15);
+.tarjeta-media:hover .poster-wrapper {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.8);
 }
 
 .poster-wrapper {
@@ -1270,6 +1260,201 @@ a {
   background: rgba(0, 223, 216, 0.5);
   border-radius: 10px;
 }
+  padding-right: 10px;
+}
+
+.review-content::-webkit-scrollbar {
+  width: 6px;
+}
+.review-content::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.1);
+}
+.review-content::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 4px;
+}
+
+/* Media Images (Posters y Backdrops) */
+.media-image-card {
+  min-width: 250px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: var(--border-glass);
+  background: var(--bg-card);
+  transition: var(--transition);
+}
+
+.media-image-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--neon-purple);
+  box-shadow: 0 5px 15px rgba(121, 40, 202, 0.4);
+}
+
+.media-image-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ==========================================================================
+   MODAL DE TRAILER
+   ========================================================================== */
+.btn-ver-trailer {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 0.8rem 1.5rem;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: var(--transition);
+  backdrop-filter: blur(10px);
+}
+
+.btn-ver-trailer:hover {
+  background: white;
+  color: #090d16;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  transform: scale(1.05);
+}
+
+.trailer-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.trailer-modal-overlay.activo {
+  opacity: 1;
+  visibility: visible;
+}
+
+.trailer-modal-content {
+  width: 90%;
+  max-width: 900px;
+  background: var(--bg-dark);
+  border: 1px solid rgba(0, 223, 216, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 223, 216, 0.15);
+  position: relative;
+  transform: scale(0.9);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.trailer-modal-overlay.activo .trailer-modal-content {
+  transform: scale(1);
+}
+
+.btn-cerrar-modal {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  background: transparent;
+  color: white;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-cerrar-modal:hover {
+  color: var(--neon-pink);
+  transform: scale(1.1);
+}
+
+@media (max-width: 992px) {
+  .btn-cerrar-modal {
+    top: -40px;
+    right: 0;
+  }
+}
+
+/* ==========================================================================
+   PANEL TENDENCIAS & HORIZONTAL SCROLLER (HOME)
+   ========================================================================== */
+.panel-tendencias {
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.2rem;
+}
+
+.panel-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+}
+
+.toggle-group {
+  display: flex;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.toggle-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  padding: 0.4rem 1.2rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.toggle-btn.activo {
+  background: var(--grad-primary);
+  color: #090d16;
+}
+
+.horizontal-scroller {
+  display: flex;
+  gap: 1.2rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 1.5rem;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+}
+
+.horizontal-scroller::-webkit-scrollbar {
+  height: 8px;
+}
+
+.horizontal-scroller::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+}
+
+.horizontal-scroller::-webkit-scrollbar-thumb {
+  background: rgba(0, 223, 216, 0.5);
+  border-radius: 10px;
+}
 
 .horizontal-scroller::-webkit-scrollbar-thumb:hover {
   background: var(--neon-cyan);
@@ -1277,12 +1462,14 @@ a {
 
 .horizontal-scroller .tarjeta-link-wrapper {
   flex: 0 0 200px;
+  width: 200px;
+  max-width: 200px;
   scroll-snap-align: start;
   flex-direction: column;
   align-items: center;
   gap: 2rem;
 }
-/* ==========================================================================
+/* ==========================================================================
    AUTENTICACIÓN (LOGIN & REGISTRO)
    ========================================================================== */
 .auth-page {
@@ -1443,4 +1630,138 @@ a {
 .btn-login-nav:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-neon);
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Profile Dropdown */
+.profile-dropdown {
+    position: relative;
+    margin-left: auto;
+}
+
+.profile-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    font-family: inherit;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    transition: background 0.3s ease;
+}
+
+.profile-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 110%;
+    right: 0;
+    width: 220px;
+    background: var(--bg-card);
+    border: var(--border-glass);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.dropdown-menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-header {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown-name {
+    font-weight: bold;
+    color: white;
+    font-size: 1rem;
+}
+
+.dropdown-email {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 0;
+}
+
+.dropdown-item {
+    padding: 0.8rem 1rem;
+    color: white;
+    text-decoration: none;
+    background: transparent;
+    border: none;
+    text-align: left;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.dropdown-item.text-danger {
+    color: #ff4b4b;
+}
+
+.dropdown-item.text-danger:hover {
+    background: rgba(255, 75, 75, 0.1);
+}
+
+/* Primary Button */
+.btn-primary {
+    background: var(--neon-cyan);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+    font-family: inherit;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: var(--neon-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 123, 255, 0.6);
+}
+
+.btn-primary:disabled {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-muted);
+    cursor: not-allowed;
+    box-shadow: none;
 }

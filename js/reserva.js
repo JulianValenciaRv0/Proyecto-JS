@@ -34,7 +34,7 @@ let currentUser = null;
 // Inicialización
 document.addEventListener('DOMContentLoaded', async () => {
     // 1. Verificar si hay usuario logueado
-    const sessionStr = sessionStorage.getItem('cineverse_session');
+    const sessionStr = sessionStorage.getItem('cineverse_user');
     if (sessionStr) {
         currentUser = JSON.parse(sessionStr);
         userNameInput.value = currentUser.fullName;

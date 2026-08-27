@@ -10,8 +10,8 @@ const API_KEY = "eb980c23c749ef9f4d30bbb2114f8a58";
 // URL base de la API REST de TMDB (versión 3)
 const URL_API = "https://api.themoviedb.org/3";
 
-// URL base para cargar imágenes/pósteres en resolución w500
-const URL_IMAGEN = "https://image.tmdb.org/t/p/w500";
+// URL base para cargar imágenes/pósteres en resolución w780 para mejor calidad
+const URL_IMAGEN = "https://image.tmdb.org/t/p/w780";
 
 // Ruta al archivo de imagen por defecto cuando no hay póster disponible
 const URL_PLACEHOLDER = "../media/placeholder.svg";
