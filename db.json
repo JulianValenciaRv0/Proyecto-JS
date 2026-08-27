@@ -1,0 +1,24 @@
+{
+  "users": [
+    {
+      "fullName": "John Doe",
+      "email": "john@example.com",
+      "password": "password123",
+      "id": 1
+    },
+    {
+      "fullName": "John Doe",
+      "email": "john.doe@example.com",
+      "password": "password123",
+      "id": 2
+    }
+  ],
+  "billboard": [],
+  "functions": [],
+  "rooms": [],
+  "seats": [],
+  "functionSeats": [],
+  "reservations": [],
+  "purchases": [],
+  "ratings": []
+}
