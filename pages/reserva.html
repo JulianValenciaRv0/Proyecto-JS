@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserva de Asientos - CineVerse</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/reserva.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Estilos específicos que se migrarán a style.css en el siguiente paso */
+    </style>
+</head>
+<body>
+    <header class="header-principal">
+        <div class="header-container">
+            <a href="../index.html" class="auth-logo-link" style="text-decoration: none;">
+                <div class="logo">
+                    <i class="fa-solid fa-play"></i>
+                    <div class="logo-texto">
+                        CINE<span>VERSE</span>
+                        <span class="logo-sub">MOVIES & TV EXPLORER</span>
+                    </div>
+                </div>
+            </a>
+            <div id="authMenu" class="nav-user"></div>
+        </div>
+    </header>
+
+    <main class="reserva-main">
+        <div class="reserva-header" id="reservaHeader">
+            <!-- Renderizado desde js/reserva.js (Poster + Info Película) -->
+            <div style="text-align:center; padding: 2rem;">
+                <i class="fa-solid fa-spinner fa-spin fa-3x" style="color:var(--neon-cyan);"></i>
+                <p style="margin-top: 1rem;">Cargando información...</p>
+            </div>
+        </div>
+
+        <div class="reserva-container">
+            <!-- Paso 1: Seleccionar Función -->
+            <section class="reserva-step active" id="step-functions">
+                <div class="reserva-step-header">
+                    <h2><span class="step-num">1</span> Seleccionar Función</h2>
+                </div>
+                <div class="functions-grid" id="functionsContainer">
+                    <!-- Renderizado dinámico -->
+                </div>
+            </section>
+
+            <!-- Paso 2: Seleccionar Asientos -->
+            <section class="reserva-step disabled" id="step-seats">
+                <div class="reserva-step-header">
+                    <h2><span class="step-num">2</span> Seleccionar Asientos <span id="currentRoomName" style="font-size: 1rem; color: var(--neon-cyan); margin-left: 10px;"></span></h2>
+                </div>
+                
+                <div class="seat-map-container" id="seatMapContainer">
+                    <div class="screen-indicator">
+                        <div class="screen-line"></div>
+                        <p>PANTALLA</p>
+                    </div>
+                    
+                    <div class="seat-map" id="seatMap">
+                        <!-- Mapa generado dinámicamente -->
+                    </div>
+
+                    <div class="seat-legend">
+                        <div class="legend-item"><div class="seat available"></div> Disponible</div>
+                        <div class="legend-item"><div class="seat selected"></div> Seleccionado</div>
+                        <div class="legend-item"><div class="seat reserved"></div> Reservado</div>
+                        <div class="legend-item"><div class="seat sold"></div> Ocupado</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Paso 3: Confirmación y Pago (Simulado) -->
+            <section class="reserva-step disabled" id="step-checkout">
+                <div class="reserva-step-header">
+                    <h2><span class="step-num">3</span> Confirmar Reserva</h2>
+                </div>
+                
+                <div class="checkout-layout">
+                    <div class="checkout-form">
+                        <h3>Datos del titular</h3>
+                        <form id="checkoutForm">
+                            <div class="form-group">
+                                <label for="userName">Nombre Completo</label>
+                                <input type="text" id="userName" required placeholder="Ej. Juan Pérez" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="userEmail">Correo Electrónico</label>
+                                <input type="email" id="userEmail" required placeholder="ejemplo@correo.com" readonly>
+                            </div>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 10px;">
+                                * La reserva se vinculará a tu cuenta activa de CineVerse.
+                            </p>
+                        </form>
+                    </div>
+                    
+                    <div class="checkout-summary">
+                        <h3>Resumen</h3>
+                        <div id="summaryDetails">
+                            <p><strong>Función:</strong> <span id="sumFunction">-</span></p>
+                            <p><strong>Asientos:</strong> <span id="sumSeats">-</span></p>
+                            <p><strong>Cantidad:</strong> <span id="sumQuantity">0</span> tickets</p>
+                            <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 15px 0;">
+                            <p style="font-size: 1.2rem; display: flex; justify-content: space-between;">
+                                <strong>Total a pagar:</strong> 
+                                <span id="sumTotal" style="color: var(--neon-cyan); font-weight: bold;">$0</span>
+                            </p>
+                        </div>
+                        <button id="btnConfirmReservation" class="btn-primary" style="width: 100%; margin-top: 1.5rem;" disabled>
+                            Confirmar Reserva
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Modal de Éxito -->
+    <div id="successModal" class="modal-overlay hidden">
+        <div class="modal-content" style="text-align: center; max-width: 400px; padding: 3rem;">
+            <i class="fa-solid fa-circle-check" style="color: #10B981; font-size: 4rem; margin-bottom: 1.5rem;"></i>
+            <h2 style="margin-bottom: 1rem;">¡Reserva Confirmada!</h2>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">Tus asientos han sido reservados con éxito. Disfruta la película en CineVerse.</p>
+            <a href="../index.html" class="btn-primary" style="text-decoration: none;">Volver al Inicio</a>
+        </div>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/reserva.js"></script>
+</body>
+</html>
