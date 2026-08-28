@@ -53,9 +53,78 @@ function formatearMoneda(valor) {
 function renderDetallesMedia(data, type) {
   const titulo = data.title || data.name;
   const fecha = data.release_date || data.first_air_date;
+  const anio = fecha ? new Date(fecha).getFullYear() : '';
   const posterUrl = data.poster_path ? `${URL_IMAGEN}${data.poster_path}` : URL_PLACEHOLDER;
   const backdropUrl = data.backdrop_path ? `https://image.tmdb.org/t/p/original${data.backdrop_path}` : '';
-  const generos = data.genres ? data.genres.map(g => g.name).join(', ') : 'No especificado';
+  const generos = data.genres?.length ? data.genres.map(g => g.name).join(', ') : 'No especificado';
+  const generosHTML = data.genres?.length ? data.genres.map(g => `<span class="detail-genre">${g.name}</span>`).join('') : '<span class="detail-genre">No especificado</span>';
+  const calificacion = data.vote_average ? Math.round(data.vote_average * 10) : 0;
+  const duracion = type === 'movie' && data.runtime ? `${Math.floor(data.runtime / 60)}h ${data.runtime % 60}m` : type === 'tv' && data.episode_run_time?.length ? `${data.episode_run_time[0]}m` : '';
+  const equipo = data.credits?.crew?.filter(c => ['Director', 'Screenplay', 'Creator', 'Writer', 'Novel'].includes(c.job)).slice(0, 4) || [];
+  const equipoHTML = equipo.map(c => `<div class="detail-credit"><p>${c.name}</p><span>${c.job}</span></div>`).join('');
+  const trailers = data.videos?.results?.filter(v => v.site === 'YouTube').slice(0, 5) || [];
+  const backdrops = data.images?.backdrops?.slice(0, 8) || [];
+  const reviews = data.reviews?.results?.slice(0, 4) || [];
+  const estado = data.status || '-';
+  const idiomaOrig = data.original_language?.toUpperCase() || '-';
+
+  const castHTML = (data.credits?.cast || []).slice(0, 10).map(actor => {
+    const foto = actor.profile_path ? `${URL_IMAGEN}${actor.profile_path}` : URL_PLACEHOLDER;
+    return `<article class="detail-cast-card"><a href="detalles.html?id=${actor.id}&type=person"><div class="detail-cast-image"><img src="${foto}" alt="${actor.name}" loading="lazy" onerror="this.src='${URL_PLACEHOLDER}'"></div><div class="detail-cast-copy"><p>${actor.name}</p><span>${actor.character || 'Reparto'}</span></div></a></article>`;
+  }).join('');
+
+  const trailersHTML = trailers.map(v => `<article class="detail-video-card"><div class="video-container"><iframe src="https://www.youtube.com/embed/${v.key}" title="${v.name}" loading="lazy" allowfullscreen></iframe></div><p title="${v.name}">${v.name}</p></article>`).join('');
+  const mediaHTML = backdrops.map(img => `<div class="media-image-card detail-still"><img src="https://image.tmdb.org/t/p/w500${img.file_path}" alt="Fotograma de ${titulo}" loading="lazy"></div>`).join('');
+
+  const reviewsHTML = reviews.map(r => {
+    let avatarUrl = '';
+    if (r.author_details?.avatar_path) avatarUrl = r.author_details.avatar_path.startsWith('/http') ? r.author_details.avatar_path.substring(1) : `${URL_IMAGEN}${r.author_details.avatar_path}`;
+    const avatar = avatarUrl ? `<img src="${avatarUrl}" alt="${r.author}" onerror="this.style.display='none'">` : r.author.charAt(0).toUpperCase();
+    const rating = r.author_details?.rating ? `<div class="review-rating-badge">★ ${r.author_details.rating}/10</div>` : '';
+    return `<article class="review-card"><div class="review-header"><div class="review-author-avatar">${avatar}</div><div class="review-author-info"><h4>${r.author}</h4><p>${formatearFecha(r.created_at)}</p></div>${rating}</div><div class="review-content">${r.content.replace(/\n/g, '<br>')}</div></article>`;
+  }).join('');
+
+  const recsHTML = (data.recommendations?.results || []).slice(0, 8).map(r => {
+    const fondo = r.backdrop_path ? `${URL_IMAGEN}${r.backdrop_path}` : URL_PLACEHOLDER;
+    const nombre = r.title || r.name;
+    const recFecha = r.release_date || r.first_air_date;
+    return `<article class="detail-rec-card"><a href="detalles.html?id=${r.id}&type=${type}"><div class="detail-rec-image"><img src="${fondo}" alt="${nombre}" loading="lazy"></div><div class="detail-rec-copy"><div><p title="${nombre}">${nombre}</p><span>${recFecha ? new Date(recFecha).getFullYear() : ''}</span></div><strong>${Math.round(r.vote_average * 10)}%</strong></div></a></article>`;
+  }).join('');
+
+  const keyList = type === 'movie' ? data.keywords?.keywords : data.keywords?.results;
+  const keywordsHTML = keyList?.length ? keyList.map(k => `<span class="detail-keyword">${k.name}</span>`).join('') : '<span class="detail-keyword">Sin palabras clave</span>';
+  const factsExtra = type === 'movie'
+    ? `<div class="detail-fact"><span>Presupuesto</span><strong>${formatearMoneda(data.budget)}</strong></div><div class="detail-fact"><span>Ingresos</span><strong>${formatearMoneda(data.revenue)}</strong></div>`
+    : `<div class="detail-fact"><span>Tipo</span><strong>${data.type || '-'}</strong></div><div class="detail-fact"><span>Canal original</span><strong>${data.networks?.map(n => n.name).join(', ') || '-'}</strong></div>`;
+
+  contenedorDetalles.innerHTML = `
+    <article class="movie-detail">
+      <section class="detail-hero" style="--detail-backdrop: url('${backdropUrl}')">
+        <div class="detail-hero-shade"></div>
+        <div class="detail-hero-grid">
+          <div class="detail-poster-wrap"><span class="detail-index">CINEVERSE / ${type === 'movie' ? 'PELÍCULA' : 'SERIE'}</span><img src="${posterUrl}" alt="Póster de ${titulo}" class="detail-poster" onerror="this.src='${URL_PLACEHOLDER}'"><span class="detail-poster-caption">${anio || 'CineVerse'} · ${idiomaOrig}</span></div>
+          <div class="detail-hero-copy"><div class="detail-genres">${generosHTML}</div><h1>${titulo}</h1><div class="detail-meta"><span>${formatearFecha(fecha)}</span>${duracion ? `<span>${duracion}</span>` : ''}<span>${generos}</span></div>${data.tagline ? `<p class="detail-tagline">“${data.tagline}”</p>` : ''}<div class="detail-actions"><div class="detail-score" aria-label="Puntuación: ${calificacion} por ciento"><strong>${calificacion}<small>%</small></strong><span>Puntuación<br>de usuario</span></div>${trailers.length ? `<button onclick="abrirTrailerModal('${trailers[0].key}')" class="btn-ver-trailer"><span aria-hidden="true">▶</span> Ver tráiler</button>` : ''}${type === 'movie' ? `<a href="reserva.html?tmdbId=${data.id}" class="detail-booking">Reservar o comprar <span aria-hidden="true">↗</span></a>` : ''}</div></div>
+        </div><span class="detail-scroll-cue">DESCUBRIR <i></i></span>
+      </section>
+      <section class="detail-story detail-shell"><div class="detail-story-heading"><span class="section-kicker">Dentro de la historia</span><h2>Una mirada<br><em>más cercana.</em></h2></div><div class="detail-story-copy"><span class="detail-chapter">01 / SINOPSIS</span><p>${data.overview || 'Sin descripción disponible.'}</p>${equipoHTML ? `<div class="detail-credits">${equipoHTML}</div>` : ''}</div></section>
+      <section class="detail-section detail-cast-section"><div class="detail-shell"><div class="detail-section-heading"><div><span class="detail-chapter">02 / EN ESCENA</span><h2>Rostros de la historia</h2></div><p>El reparto principal que da vida a este universo.</p></div><div class="detail-cast-track horizontal-scroller-simple">${castHTML || '<p>Reparto no disponible.</p>'}</div></div></section>
+      ${(trailers.length || backdrops.length) ? `<section class="detail-section detail-media-section detail-shell"><div class="detail-section-heading"><div><span class="detail-chapter">03 / ARCHIVO VISUAL</span><h2>Detrás de la pantalla</h2></div><p>Tráileres, escenas e imágenes de la producción.</p></div>${trailers.length ? `<div class="detail-media-label">Vídeos</div><div class="detail-video-track horizontal-scroller-simple">${trailersHTML}</div>` : ''}${backdrops.length ? `<div class="detail-media-label">Fotogramas</div><div class="detail-stills-track horizontal-scroller-simple">${mediaHTML}</div>` : ''}</section>` : ''}
+      <section class="detail-info-band"><div class="detail-shell detail-info-grid"><div><span class="detail-chapter">04 / DATOS DE PRODUCCIÓN</span><h2>La obra<br>en contexto.</h2></div><div class="detail-facts"><div class="detail-fact"><span>Estado</span><strong>${estado}</strong></div><div class="detail-fact"><span>Idioma original</span><strong>${idiomaOrig}</strong></div>${factsExtra}</div><div class="detail-keywords"><span>Temas y palabras clave</span><div>${keywordsHTML}</div></div></div></section>
+      ${reviews.length ? `<section class="detail-section detail-reviews detail-shell"><div class="detail-section-heading"><div><span class="detail-chapter">05 / COMUNIDAD</span><h2>Lo que deja la historia</h2></div><p>Lecturas y opiniones de otros espectadores.</p></div><div class="detail-reviews-grid">${reviewsHTML}</div>${data.reviews?.total_results > 4 ? `<p class="detail-more-reviews">${data.reviews.total_results} reseÃ±as publicadas</p>` : ''}</section>` : ''}
+      <section class="detail-section detail-recommendations"><div class="detail-shell"><div class="detail-section-heading"><div><span class="detail-chapter">SIGUIENTE FUNCIÓN</span><h2>Continúa explorando</h2></div><p>Historias que comparten algo con esta.</p></div><div class="detail-rec-track horizontal-scroller-simple">${recsHTML || '<p>No tenemos suficientes datos para sugerir recomendaciones.</p>'}</div></div></section>
+    </article>
+    <div id="trailer-modal" class="trailer-modal-overlay" onclick="cerrarTrailerModal(event)"><div class="trailer-modal-content"><button class="btn-cerrar-modal" onclick="cerrarTrailerModal()">×</button><div class="video-container" id="trailer-modal-video"></div></div></div>`;
+}
+
+function renderDetallesMediaLegacy(data, type) {
+  const titulo = data.title || data.name;
+  const fecha = data.release_date || data.first_air_date;
+  const posterUrl = data.poster_path ? `${URL_IMAGEN}${data.poster_path}` : URL_PLACEHOLDER;
+  const backdropUrl = data.backdrop_path ? `https://image.tmdb.org/t/p/original${data.backdrop_path}` : '';
+  const generos = data.genres?.length ? data.genres.map(g => g.name).join(', ') : 'No especificado';
+  const generosHTML = data.genres?.length
+    ? data.genres.map(g => `<span class="detail-genre">${g.name}</span>`).join('')
+    : '<span class="detail-genre">No especificado</span>';
   const calificacion = data.vote_average ? Math.round(data.vote_average * 10) : 0;
   
   const duracion = type === 'movie' && data.runtime 
@@ -68,9 +137,9 @@ function renderDetallesMedia(data, type) {
     : [];
 
   const equipoHTML = equipoPrincipal.map(c => `
-    <div style="flex: 1 1 45%; margin-bottom: 1rem;">
-      <p style="font-weight: bold; margin:0;">${c.name}</p>
-      <p style="font-size: 0.9rem; color: #ddd; margin:0;">${c.job}</p>
+    <div class="detail-credit">
+      <p>${c.name}</p>
+      <span>${c.job}</span>
     </div>
   `).join('');
 
@@ -79,15 +148,15 @@ function renderDetallesMedia(data, type) {
   const castHTML = cast.map(actor => {
     const actorFoto = actor.profile_path ? `${URL_IMAGEN}${actor.profile_path}` : URL_PLACEHOLDER;
     return `
-      <div style="min-width: 140px; max-width: 140px; background: var(--bg-card); border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.3); flex-shrink: 0;">
-        <a href="detalles.html?id=${actor.id}&type=person" style="text-decoration:none; color:inherit;">
-          <img src="${actorFoto}" alt="${actor.name}" style="width:100%; height:175px; object-fit:cover;" onerror="this.src='${URL_PLACEHOLDER}'">
-          <div style="padding: 10px;">
-            <p style="font-weight: bold; font-size: 0.95rem; margin: 0 0 5px 0;">${actor.name}</p>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">${actor.character}</p>
+      <article class="detail-cast-card">
+        <a href="detalles.html?id=${actor.id}&type=person">
+          <div class="detail-cast-image"><img src="${actorFoto}" alt="${actor.name}" loading="lazy" onerror="this.src='${URL_PLACEHOLDER}'"></div>
+          <div class="detail-cast-copy">
+            <p>${actor.name}</p>
+            <span>${actor.character || 'Reparto'}</span>
           </div>
         </a>
-      </div>
+      </article>
     `;
   }).join('');
 
@@ -99,22 +168,22 @@ function renderDetallesMedia(data, type) {
     const rDate = r.release_date || r.first_air_date;
     const rCalificacion = Math.round(r.vote_average * 10);
     return `
-      <div style="min-width: 250px; flex-shrink: 0;">
-        <a href="detalles.html?id=${r.id}&type=${type}" style="text-decoration:none; color:inherit;">
-          <img src="${recFondo}" alt="${rTitle}" style="width:100%; border-radius: 8px; margin-bottom: 5px; height: 140px; object-fit:cover;">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <p style="margin:0; font-size: 0.95rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${rTitle}">${rTitle}</p>
-            <span style="font-size: 0.85rem; color:var(--text-muted); margin-left: 10px;">${rCalificacion}%</span>
+      <article class="detail-rec-card">
+        <a href="detalles.html?id=${r.id}&type=${type}">
+          <div class="detail-rec-image"><img src="${recFondo}" alt="${rTitle}" loading="lazy"></div>
+          <div class="detail-rec-copy">
+            <div><p title="${rTitle}">${rTitle}</p><span>${rDate ? new Date(rDate).getFullYear() : ''}</span></div>
+            <strong>${rCalificacion}%</strong>
           </div>
         </a>
-      </div>
+      </article>
     `;
   }).join('');
 
   // Keywords
   const keyList = type === 'movie' ? data.keywords?.keywords : data.keywords?.results;
   const keywordsHTML = keyList ? keyList.map(k => `
-    <span style="background: rgba(255,255,255,0.1); padding: 5px 10px; border-radius: 4px; font-size: 0.85rem; margin: 0 5px 5px 0; display: inline-block;">${k.name}</span>
+    <span class="detail-keyword">${k.name}</span>
   `).join('') : 'No hay palabras clave';
 
   const estado = data.status || '-';
@@ -123,35 +192,31 @@ function renderDetallesMedia(data, type) {
   let sidebarFinanciero = '';
   if (type === 'movie') {
     sidebarFinanciero = `
-      <p style="margin: 0 0 5px 0; font-weight:bold;">Presupuesto</p>
-      <p style="margin: 0 0 15px 0; font-size:0.95rem;">${formatearMoneda(data.budget)}</p>
-      <p style="margin: 0 0 5px 0; font-weight:bold;">Ingresos</p>
-      <p style="margin: 0 0 15px 0; font-size:0.95rem;">${formatearMoneda(data.revenue)}</p>
+      <div class="detail-fact"><span>Presupuesto</span><strong>${formatearMoneda(data.budget)}</strong></div>
+      <div class="detail-fact"><span>Ingresos</span><strong>${formatearMoneda(data.revenue)}</strong></div>
     `;
   } else {
     sidebarFinanciero = `
-      <p style="margin: 0 0 5px 0; font-weight:bold;">Tipo</p>
-      <p style="margin: 0 0 15px 0; font-size:0.95rem;">${data.type || '-'}</p>
-      <p style="margin: 0 0 5px 0; font-weight:bold;">Canal Original</p>
-      <p style="margin: 0 0 15px 0; font-size:0.95rem;">${data.networks ? data.networks.map(n => n.name).join(', ') : '-'}</p>
+      <div class="detail-fact"><span>Tipo</span><strong>${data.type || '-'}</strong></div>
+      <div class="detail-fact"><span>Canal original</span><strong>${data.networks ? data.networks.map(n => n.name).join(', ') : '-'}</strong></div>
     `;
   }
 
   // Trailers
   const trailers = data.videos?.results ? data.videos.results.filter(v => v.site === 'YouTube').slice(0, 5) : [];
   const trailersHTML = trailers.map(v => `
-    <div style="min-width: 320px; max-width: 400px; flex-shrink: 0;">
+    <article class="detail-video-card">
       <div class="video-container">
         <iframe src="https://www.youtube.com/embed/${v.key}" title="${v.name}" allowfullscreen></iframe>
       </div>
-      <p style="margin-top: 8px; font-weight: 600; font-size: 0.9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${v.name}">${v.name}</p>
-    </div>
+      <p title="${v.name}">${v.name}</p>
+    </article>
   `).join('');
 
   // Media (Backdrops)
   const backdrops = data.images?.backdrops ? data.images.backdrops.slice(0, 8) : [];
   const mediaHTML = backdrops.map(img => `
-    <div class="media-image-card" style="width: 300px; height: 169px;">
+    <div class="media-image-card detail-still">
       <img src="https://image.tmdb.org/t/p/w500${img.file_path}" alt="Media Backdrop" loading="lazy">
     </div>
   `).join('');

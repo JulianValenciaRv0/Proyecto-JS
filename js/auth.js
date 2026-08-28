@@ -5,6 +5,7 @@
 const JSON_SERVER_URL = 'http://localhost:3000';
 
 document.addEventListener('DOMContentLoaded', () => {
+    inicializarNavbarDinamica();
     inicializarNavegacionAuth();
 
     const loginForm = document.getElementById('loginForm');
@@ -17,6 +18,24 @@ document.addEventListener('DOMContentLoaded', () => {
         registroForm.addEventListener('submit', manejarRegistro);
     }
 });
+
+/**
+ * Mantiene el header transparente sobre los heroes y le aplica un fondo sólido
+ * cuando el usuario empieza a recorrer la página.
+ */
+function inicializarNavbarDinamica() {
+    const header = document.querySelector('.header-principal');
+    if (!header) return;
+
+    const actualizarNavbar = () => {
+        const estaArriba = window.scrollY <= 20;
+        header.classList.toggle('is-at-top', estaArriba);
+        header.classList.toggle('is-scrolled', !estaArriba);
+    };
+
+    actualizarNavbar();
+    window.addEventListener('scroll', actualizarNavbar, { passive: true });
+}
 
 /**
  * Muestra el menú de autenticación en la barra de navegación dependiendo
@@ -38,9 +57,11 @@ function inicializarNavegacionAuth() {
         authMenu.innerHTML = `
             <div class="profile-dropdown">
                 <button class="profile-btn">
-                    <i class="fa-solid fa-circle-user"></i>
+                    <span class="profile-avatar" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" focusable="false"><circle cx="12" cy="8" r="3.25"></circle><path d="M5.5 19c.55-4 2.75-6 6.5-6s5.95 2 6.5 6"></path></svg>
+                    </span>
                     <span>${user.fullName.split(' ')[0]}</span>
-                    <i class="fa-solid fa-chevron-down" style="font-size: 0.7rem; margin-left: 0.3rem;"></i>
+                    <svg class="profile-chevron" viewBox="0 0 12 8" aria-hidden="true"><path d="m1 1 5 5 5-5"></path></svg>
                 </button>
                 <div class="dropdown-menu">
                     <div class="dropdown-header">
@@ -49,11 +70,11 @@ function inicializarNavegacionAuth() {
                     </div>
                     <div class="dropdown-divider"></div>
                     <a href="${reservasPath}" class="dropdown-item">
-                        <i class="fa-solid fa-ticket"></i> Mis Reservas
+                        <span aria-hidden="true">◫</span> Mis Reservas
                     </a>
                     <div class="dropdown-divider"></div>
                     <button id="btnLogout" class="dropdown-item text-danger">
-                        <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+                        <span aria-hidden="true">↪</span> Cerrar sesión
                     </button>
                 </div>
             </div>

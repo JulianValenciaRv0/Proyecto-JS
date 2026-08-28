@@ -1,6 +1,6 @@
 .reservas-container {
     max-width: 1200px;
-    margin: 100px auto 4rem auto;
+    margin: clamp(3rem,7vw,6rem) auto 4rem auto;
     padding: 0 2rem;
 }
 
