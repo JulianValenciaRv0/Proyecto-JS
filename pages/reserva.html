@@ -111,9 +111,14 @@
                                 <span id="sumTotal" style="color: var(--neon-cyan); font-weight: bold;">$0</span>
                             </p>
                         </div>
-                        <button id="btnConfirmReservation" class="btn-primary" style="width: 100%; margin-top: 1.5rem;" disabled>
-                            Confirmar Reserva
-                        </button>
+                        <div class="checkout-actions">
+                            <button id="btnReserveSeats" class="btn-secondary" disabled>
+                                Reservar y pagar después
+                            </button>
+                            <button id="btnBuySeats" class="btn-primary" disabled>
+                                Comprar ahora
+                            </button>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -125,9 +130,9 @@
     <div id="successModal" class="modal-overlay hidden">
         <div class="modal-content" style="text-align: center; max-width: 400px; padding: 3rem;">
             <i class="fa-solid fa-circle-check" style="color: #10B981; font-size: 4rem; margin-bottom: 1.5rem;"></i>
-            <h2 style="margin-bottom: 1rem;">¡Reserva Confirmada!</h2>
-            <p style="color: var(--text-muted); margin-bottom: 2rem;">Tus asientos han sido reservados con éxito. Disfruta la película en CineVerse.</p>
-            <a href="../index.html" class="btn-primary" style="text-decoration: none;">Volver al Inicio</a>
+            <h2 id="successTitle" style="margin-bottom: 1rem;">¡Operación completada!</h2>
+            <p id="successMessage" style="color: var(--text-muted); margin-bottom: 2rem;"></p>
+            <a href="mis_reservas.html" class="btn-primary" style="text-decoration: none;">Ver mis boletas</a>
         </div>
     </div>
 

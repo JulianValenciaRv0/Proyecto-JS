@@ -95,6 +95,19 @@
     <a href="pages/peliculas.html?genre=12" class="filter-pill" style="border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 0.5rem 1.8rem; border-radius: 25px; text-decoration: none; font-size: 0.9rem;">Adventure</a>
   </div>
 
+  <!-- INTRO EDITORIAL -->
+  <section class="home-intro" aria-labelledby="home-intro-title">
+    <div class="home-intro-copy">
+      <span class="section-kicker">Tu próxima historia empieza aquí</span>
+      <h1 id="home-intro-title">Cine para mirar.<br><em>Historias para sentir.</em></h1>
+    </div>
+    <div class="home-intro-aside">
+      <p>CineVerse reúne películas, series y las personas que les dan vida en una experiencia creada para descubrir sin prisa.</p>
+      <a href="pages/peliculas.html" class="text-link">Explorar el catálogo <span aria-hidden="true">↗</span></a>
+    </div>
+    <div class="home-intro-rule" aria-hidden="true"><span>CV</span></div>
+  </section>
+
   <!-- CONTENIDO PRINCIPAL -->
   <main class="contenedor-principal home-main">
     
@@ -113,6 +126,19 @@
       </div>
     </section>
 
+    <!-- PAUSA EDITORIAL -->
+    <section class="cinema-manifesto" aria-labelledby="manifesto-title">
+      <div class="manifesto-mark" aria-hidden="true">
+        <span class="film-frame"></span><span class="film-frame"></span><span class="film-frame"></span>
+      </div>
+      <div class="manifesto-copy">
+        <span class="section-kicker">Más allá de la pantalla</span>
+        <h2 id="manifesto-title">Cada película abre<br>una puerta distinta.</h2>
+        <p>Vuelve a los clásicos, encuentra algo inesperado o déjate llevar por lo que todos están viendo.</p>
+      </div>
+      <div class="manifesto-word" aria-hidden="true">STORIES</div>
+    </section>
+
     <!-- POPULARES -->
     <section class="panel-populares" style="margin-bottom: 4rem;">
       <div class="panel-header" style="margin-bottom: 1.5rem;">
@@ -125,6 +151,34 @@
       
       <div class="horizontal-scroller" id="scroller-popular">
         <div class="cargando-spinner">Cargando lo más popular...</div>
+      </div>
+    </section>
+
+    <!-- RUTAS DE DESCUBRIMIENTO -->
+    <section class="discovery-section" aria-labelledby="discovery-title">
+      <div class="discovery-heading">
+        <div>
+          <span class="section-kicker">Elige tu recorrido</span>
+          <h2 id="discovery-title">Una forma diferente<br>de entrar al cine.</h2>
+        </div>
+        <p>No siempre necesitas saber qué buscas. Empieza por un estado de ánimo y deja que el catálogo haga el resto.</p>
+      </div>
+      <div class="discovery-grid">
+        <a href="pages/peliculas.html?genre=28" class="discovery-card discovery-card-action">
+          <span class="discovery-number">01</span>
+          <div><span class="discovery-label">Ritmo y adrenalina</span><h3>Acción</h3></div>
+          <span class="discovery-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a href="pages/series.html" class="discovery-card discovery-card-series">
+          <span class="discovery-number">02</span>
+          <div><span class="discovery-label">Historias que continúan</span><h3>Series</h3></div>
+          <span class="discovery-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a href="pages/personas.html" class="discovery-card discovery-card-people">
+          <span class="discovery-number">03</span>
+          <div><span class="discovery-label">Frente y detrás de cámara</span><h3>Personas</h3></div>
+          <span class="discovery-arrow" aria-hidden="true">↗</span>
+        </a>
       </div>
     </section>
 
@@ -143,21 +197,51 @@
       </div>
     </section>
 
+    <!-- CIERRE DE DESCUBRIMIENTO -->
+    <section class="home-closing" aria-labelledby="closing-title">
+      <div class="closing-orbit" aria-hidden="true"><span></span><span></span><span></span></div>
+      <span class="section-kicker">La función nunca termina</span>
+      <h2 id="closing-title">Hay una historia<br>esperando por ti.</h2>
+      <p>Explora el catálogo completo y encuentra ese título que todavía no sabías que querías ver.</p>
+      <div class="closing-actions">
+        <a href="pages/peliculas.html" class="btn-editorial-primary">Ver películas</a>
+        <a href="pages/series.html" class="btn-editorial-secondary">Explorar series</a>
+      </div>
+    </section>
+
   </main>
 
   <!-- FOOTER PRINCIPAL -->
   <footer class="footer-principal">
     <div class="footer-contenido">
-      <div class="footer-info">
-        <h4>CineVerse Explorer</h4>
-        <p>Aplicación desarrollada con Vanilla JavaScript consumiendo la API de TMDB.</p>
+      <div class="footer-brand">
+        <img src="media/logo.svg" alt="CineVerse Logo" class="footer-logo">
+        <p>Un espacio para descubrir películas, series y las personas que convierten cada historia en cine.</p>
+        <span class="footer-signature">EXPLORE · DISCOVER · WATCH</span>
       </div>
-      <div>
-        <img src="media/logo.svg" alt="CineVerse Logo" style="height: 32px;">
+      <div class="footer-nav-group">
+        <h4>Descubrir</h4>
+        <a href="pages/peliculas.html">Películas</a>
+        <a href="pages/series.html">Series de TV</a>
+        <a href="pages/personas.html">Personas</a>
+        <a href="pages/awards.html">Awards</a>
+      </div>
+      <div class="footer-nav-group">
+        <h4>Explorar</h4>
+        <a href="pages/peliculas.html?cat=popular">Populares</a>
+        <a href="pages/peliculas.html?cat=now_playing">En cartelera</a>
+        <a href="pages/peliculas.html?cat=upcoming">Próximamente</a>
+        <a href="pages/peliculas.html?cat=top_rated">Mejor calificadas</a>
+      </div>
+      <div class="footer-project">
+        <span class="section-kicker">Sobre el proyecto</span>
+        <p>Desarrollado con HTML, CSS y JavaScript vanilla. Información cinematográfica proporcionada por TMDB.</p>
+        <a href="pages/login.html" class="text-link">Acceder a CineVerse <span aria-hidden="true">↗</span></a>
       </div>
     </div>
     <div class="footer-copy">
-      <p>&copy; 2026 CineVerse Explorer - Práctica de Desarrollo Web</p>
+      <p>&copy; 2026 CineVerse Explorer</p>
+      <p>Diseñado para quienes siempre buscan la próxima historia.</p>
     </div>
   </footer>
 

@@ -30,6 +30,48 @@
     gap: 2rem;
 }
 
+.booking-section {
+    margin-bottom: 4rem;
+}
+
+.booking-section-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.booking-section-heading h2 {
+    color: white;
+    font-size: clamp(1.6rem, 3vw, 2.25rem);
+    letter-spacing: -0.04em;
+}
+
+.booking-kicker {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: var(--neon-cyan);
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+}
+
+.booking-count {
+    min-width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white;
+    font-weight: 800;
+}
+
 .loading-spinner {
     grid-column: 1 / -1;
     text-align: center;
@@ -116,6 +158,16 @@
     border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
+.ticket-reserved .ticket-status {
+    background: rgba(245,158,11,0.1);
+    color: #fbbf24;
+    border-color: rgba(245,158,11,0.35);
+}
+
+.ticket-reserved .ticket-header {
+    background: linear-gradient(90deg, rgba(245,158,11,0.1), transparent);
+}
+
 .ticket-title {
     font-size: 1.4rem;
     font-weight: 700;
@@ -199,4 +251,39 @@
     font-size: 1.1rem;
     color: white;
     font-weight: bold;
+}
+
+.ticket-payment {
+    padding: 1rem 1.5rem 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.ticket-payment p {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    margin-bottom: 0.9rem;
+}
+
+.btn-pay-reservation {
+    width: 100%;
+}
+
+.compact-empty {
+    padding: 2.5rem 1.5rem;
+}
+
+.compact-empty i {
+    font-size: 2.5rem;
+}
+
+.empty-action {
+    display: inline-block;
+    margin-top: 1.25rem;
+}
+
+@media (max-width: 520px) {
+    .reservas-container { padding-inline: 1rem; }
+    .tickets-grid { grid-template-columns: 1fr; }
+    .ticket-body { align-items: flex-start; }
+    .ticket-title { padding-right: 0; padding-top: 2rem; }
 }

@@ -35,16 +35,35 @@
 
     <main class="reservas-container">
         <div class="reservas-header">
-            <h1><i class="fa-solid fa-ticket"></i> Mis Reservas</h1>
-            <p>Historial de tus boletos de CineVerse.</p>
+            <h1><i class="fa-solid fa-ticket"></i> Mis Boletas</h1>
+            <p>Administra tus asientos reservados y consulta tus compras.</p>
         </div>
 
-        <div id="ticketsContainer" class="tickets-grid">
-            <!-- Los tickets se cargarán aquí -->
-            <div class="loading-spinner">
-                <i class="fa-solid fa-circle-notch fa-spin"></i> Cargando reservas...
+        <section class="booking-section" aria-labelledby="reservedTitle">
+            <div class="booking-section-heading">
+                <div>
+                    <span class="booking-kicker">Pendientes de pago</span>
+                    <h2 id="reservedTitle">Asientos reservados</h2>
+                </div>
+                <span id="reservedCount" class="booking-count">0</span>
             </div>
-        </div>
+            <div id="reservedTicketsContainer" class="tickets-grid">
+                <div class="loading-spinner">
+                    <i class="fa-solid fa-circle-notch fa-spin"></i> Cargando reservas...
+                </div>
+            </div>
+        </section>
+
+        <section class="booking-section purchased-section" aria-labelledby="purchasedTitle">
+            <div class="booking-section-heading">
+                <div>
+                    <span class="booking-kicker">Pago completado</span>
+                    <h2 id="purchasedTitle">Boletas compradas</h2>
+                </div>
+                <span id="purchasedCount" class="booking-count">0</span>
+            </div>
+            <div id="purchasedTicketsContainer" class="tickets-grid"></div>
+        </section>
     </main>
 
     <script src="../js/config.js"></script>

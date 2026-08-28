@@ -14,8 +14,11 @@ const stepCheckout = document.getElementById('step-checkout');
 const checkoutForm = document.getElementById('checkoutForm');
 const userNameInput = document.getElementById('userName');
 const userEmailInput = document.getElementById('userEmail');
-const btnConfirmReservation = document.getElementById('btnConfirmReservation');
+const btnReserveSeats = document.getElementById('btnReserveSeats');
+const btnBuySeats = document.getElementById('btnBuySeats');
 const successModal = document.getElementById('successModal');
+const successTitle = document.getElementById('successTitle');
+const successMessage = document.getElementById('successMessage');
 
 // Elementos del Resumen
 const sumFunction = document.getElementById('sumFunction');
@@ -260,26 +263,31 @@ function updateSummary() {
     sumQuantity.innerText = count;
     sumTotal.innerText = `$${total.toLocaleString()}`;
 
-    btnConfirmReservation.disabled = count === 0;
+    btnReserveSeats.disabled = count === 0;
+    btnBuySeats.disabled = count === 0;
 }
 
-btnConfirmReservation.addEventListener('click', async () => {
+btnReserveSeats.addEventListener('click', () => processBooking('reserved'));
+btnBuySeats.addEventListener('click', () => processBooking('purchased'));
+
+async function processBooking(status) {
     if (!currentUser) {
-        alert("Debes iniciar sesión para realizar una reserva.");
-        // Opcional: Redirigir al login
+        alert("Debes iniciar sesión para reservar o comprar boletas.");
         window.location.href = '../pages/login.html';
         return;
     }
 
     if (selectedSeats.length === 0) return;
-    
+
+    if (!checkoutForm.reportValidity()) return;
+
     // Prevenir doble clic
-    btnConfirmReservation.disabled = true;
-    btnConfirmReservation.innerText = 'Procesando...';
+    setBookingButtonsLoading(true);
 
     const userId = currentUser.id;
+    const isPurchase = status === 'purchased';
 
-    // 1. Crear el registro de la Reserva
+    // Un mismo registro cambia de "reserved" a "purchased" al realizar el pago.
     const reservationData = {
         userId: userId,
         userName: userNameInput.value,
@@ -288,6 +296,10 @@ btnConfirmReservation.addEventListener('click', async () => {
         movieTitle: movieData.title,
         functionId: currentFunction.id,
         roomId: currentRoom.id,
+        functionDate: currentFunction.date,
+        functionTime: currentFunction.time,
+        roomName: currentRoom.name,
+        pricePerTicket: currentFunction.price,
         quantity: selectedSeats.length,
         total: selectedSeats.length * currentFunction.price,
         seats: selectedSeats.map(s => ({
@@ -295,8 +307,9 @@ btnConfirmReservation.addEventListener('click', async () => {
             seatCode: s.seatCode,
             location: s.location
         })),
-        status: 'confirmed',
-        createdAt: new Date().toISOString()
+        status,
+        createdAt: new Date().toISOString(),
+        paidAt: isPurchase ? new Date().toISOString() : null
     };
 
     try {
@@ -308,24 +321,33 @@ btnConfirmReservation.addEventListener('click', async () => {
 
         if (!res.ok) throw new Error("Error al guardar reserva");
 
-        // 2. Actualizar estado de asientos (cambiar a 'reserved')
+        // Una reserva aparta el asiento; una compra lo marca como vendido.
         for (const seat of selectedSeats) {
             if (seat.functionSeatId) {
                 await fetch(`${API_JSON_SERVER}/functionSeats/${seat.functionSeatId}`, {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ status: 'reserved' })
+                    body: JSON.stringify({ status: isPurchase ? 'sold' : 'reserved' })
                 });
             }
         }
 
-        // 3. Mostrar Modal de Éxito
+        successTitle.innerText = isPurchase ? '¡Compra completada!' : '¡Asientos reservados!';
+        successMessage.innerText = isPurchase
+            ? 'Tu pago fue registrado y tus boletas ya están disponibles en tu perfil.'
+            : 'Tus asientos quedaron apartados. Puedes pagarlos después desde Mis Boletas.';
         successModal.classList.remove('hidden');
 
     } catch (error) {
         console.error(error);
-        alert("Ocurrió un error al procesar tu reserva. Inténtalo de nuevo.");
-        btnConfirmReservation.disabled = false;
-        btnConfirmReservation.innerText = 'Confirmar Reserva';
+        alert("Ocurrió un error al procesar la operación. Inténtalo de nuevo.");
+        setBookingButtonsLoading(false);
     }
-});
+}
+
+function setBookingButtonsLoading(isLoading) {
+    btnReserveSeats.disabled = isLoading || selectedSeats.length === 0;
+    btnBuySeats.disabled = isLoading || selectedSeats.length === 0;
+    btnReserveSeats.innerText = isLoading ? 'Procesando...' : 'Reservar y pagar después';
+    btnBuySeats.innerText = isLoading ? 'Procesando...' : 'Comprar ahora';
+}

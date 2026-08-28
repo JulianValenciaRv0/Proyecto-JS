@@ -274,6 +274,44 @@
   color: white;
 }
 
+.checkout-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.checkout-actions button {
+  width: 100%;
+  min-height: 48px;
+  font-family: inherit;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255,255,255,0.22);
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@media (max-width: 560px) {
+  .checkout-actions { grid-template-columns: 1fr; }
+}
+
 /* Success Modal */
 .modal-overlay {
     position: fixed;

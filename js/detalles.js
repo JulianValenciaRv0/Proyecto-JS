@@ -227,7 +227,7 @@ function renderDetallesMedia(data, type) {
             
             ${type === 'movie' ? `
               <a href="reserva.html?tmdbId=${data.id}" class="btn-primary" style="text-decoration:none; display:inline-flex; align-items:center; gap:0.5rem; padding: 0.8rem 1.5rem; box-shadow: var(--shadow-neon);">
-                🍿 Reservar Asientos
+                Reservar o comprar
               </a>
             ` : ''}
           </div>
