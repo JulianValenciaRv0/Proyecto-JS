@@ -105,10 +105,10 @@
                             </p>
                         </div>
                         <div class="checkout-actions">
-                            <button id="btnReserveSeats" class="btn-secondary" disabled>
+                            <button type="button" id="btnReserveSeats" class="btn-secondary" disabled>
                                 Reservar y pagar después
                             </button>
-                            <button id="btnBuySeats" class="btn-primary" disabled>
+                            <button type="button" id="btnBuySeats" class="btn-primary" disabled>
                                 Comprar ahora
                             </button>
                         </div>
@@ -120,12 +120,25 @@
     </main>
 
     <!-- Modal de Éxito -->
-    <div id="successModal" class="modal-overlay hidden">
-        <div class="modal-content" style="text-align: center; max-width: 400px; padding: 3rem;">
+    <div id="successModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="successTitle">
+        <div class="modal-content success-modal-content" style="text-align: center; max-width: 400px; padding: 3rem;">
+            <button type="button" id="btnCloseSuccess" class="success-modal-close" aria-label="Cerrar confirmación">×</button>
             <i class="fa-solid fa-circle-check" style="color: #10B981; font-size: 4rem; margin-bottom: 1.5rem;"></i>
             <h2 id="successTitle" style="margin-bottom: 1rem;">¡Operación completada!</h2>
             <p id="successMessage" style="color: var(--text-muted); margin-bottom: 2rem;"></p>
-            <a href="mis_reservas.html" class="btn-primary" style="text-decoration: none;">Ver mis boletas</a>
+            <button type="button" id="btnAcceptSuccess" class="btn-primary">Aceptar</button>
+        </div>
+    </div>
+
+    <div id="noticeModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="noticeTitle">
+        <div class="modal-content notice-modal-content">
+            <div id="noticeIcon" class="notice-modal-icon"><i class="fa-solid fa-circle-info"></i></div>
+            <h2 id="noticeTitle">Aviso</h2>
+            <p id="noticeMessage"></p>
+            <div class="notice-modal-actions">
+                <button type="button" id="btnDismissNotice" class="btn-secondary">Cerrar</button>
+                <button type="button" id="btnNoticeAction" class="btn-primary hidden">Continuar</button>
+            </div>
         </div>
     </div>
 

@@ -6058,13 +6058,13 @@
       "id": 761,
       "functionId": 19,
       "seatId": 41,
-      "status": "reserved"
+      "status": "available"
     },
     {
       "id": 762,
       "functionId": 19,
       "seatId": 42,
-      "status": "reserved"
+      "status": "available"
     },
     {
       "id": 763,
@@ -12400,10 +12400,203 @@
           "location": "Izquierda - Posterior"
         }
       ],
-      "status": "reserved",
+      "status": "cancelled",
       "createdAt": "2026-08-28T03:03:45.066Z",
       "paidAt": null,
-      "id": 4
+      "id": 4,
+      "cancelledAt": "2026-08-29T00:03:00.959Z"
+    },
+    {
+      "userId": 3,
+      "userName": "julian valencia",
+      "email": "julian@gmail.com",
+      "movieId": 1368337,
+      "movieTitle": "La Odisea",
+      "functionId": 19,
+      "roomId": 1,
+      "functionDate": "2026-08-27",
+      "functionTime": "15:00",
+      "roomName": "Sala 1 (3D)",
+      "pricePerTicket": 15000,
+      "quantity": 2,
+      "total": 30000,
+      "seats": [
+        {
+          "seatId": 41,
+          "seatCode": "F1",
+          "location": "Izquierda - Posterior"
+        },
+        {
+          "seatId": 42,
+          "seatCode": "F2",
+          "location": "Izquierda - Posterior"
+        }
+      ],
+      "status": "cancelled",
+      "createdAt": "2026-08-29T00:06:55.964Z",
+      "paidAt": null,
+      "id": 5,
+      "cancelledAt": "2026-08-29T00:07:17.376Z"
+    },
+    {
+      "userId": 3,
+      "userName": "julian valencia",
+      "email": "julian@gmail.com",
+      "movieId": 1368337,
+      "movieTitle": "La Odisea",
+      "functionId": 19,
+      "roomId": 1,
+      "functionDate": "2026-08-27",
+      "functionTime": "15:00",
+      "roomName": "Sala 1 (3D)",
+      "pricePerTicket": 15000,
+      "quantity": 2,
+      "total": 30000,
+      "seats": [
+        {
+          "seatId": 41,
+          "seatCode": "F1",
+          "location": "Izquierda - Posterior"
+        },
+        {
+          "seatId": 42,
+          "seatCode": "F2",
+          "location": "Izquierda - Posterior"
+        }
+      ],
+      "status": "cancelled",
+      "createdAt": "2026-08-29T00:07:29.196Z",
+      "paidAt": null,
+      "id": 6,
+      "cancelledAt": "2026-08-29T00:07:37.218Z"
+    },
+    {
+      "userId": 3,
+      "userName": "julian valencia",
+      "email": "julian@gmail.com",
+      "movieId": 1368337,
+      "movieTitle": "La Odisea",
+      "functionId": 19,
+      "roomId": 1,
+      "functionDate": "2026-08-27",
+      "functionTime": "15:00",
+      "roomName": "Sala 1 (3D)",
+      "pricePerTicket": 15000,
+      "quantity": 2,
+      "total": 30000,
+      "seats": [
+        {
+          "seatId": 41,
+          "seatCode": "F1",
+          "location": "Izquierda - Posterior"
+        },
+        {
+          "seatId": 42,
+          "seatCode": "F2",
+          "location": "Izquierda - Posterior"
+        }
+      ],
+      "status": "cancelled",
+      "createdAt": "2026-08-29T00:13:09.930Z",
+      "paidAt": null,
+      "id": 7,
+      "cancelledAt": "2026-08-29T00:13:27.378Z"
+    },
+    {
+      "userId": 3,
+      "userName": "julian valencia",
+      "email": "julian@gmail.com",
+      "movieId": 1368337,
+      "movieTitle": "La Odisea",
+      "functionId": 19,
+      "roomId": 1,
+      "functionDate": "2026-08-27",
+      "functionTime": "15:00",
+      "roomName": "Sala 1 (3D)",
+      "pricePerTicket": 15000,
+      "quantity": 2,
+      "total": 30000,
+      "seats": [
+        {
+          "seatId": 41,
+          "seatCode": "F1",
+          "location": "Izquierda - Posterior"
+        },
+        {
+          "seatId": 42,
+          "seatCode": "F2",
+          "location": "Izquierda - Posterior"
+        }
+      ],
+      "status": "cancelled",
+      "createdAt": "2026-08-29T00:13:43.678Z",
+      "paidAt": null,
+      "id": 8,
+      "cancelledAt": "2026-08-29T00:13:56.208Z"
+    },
+    {
+      "userId": 3,
+      "userName": "julian valencia",
+      "email": "julian@gmail.com",
+      "movieId": 1368337,
+      "movieTitle": "La Odisea",
+      "functionId": 19,
+      "roomId": 1,
+      "functionDate": "2026-08-27",
+      "functionTime": "15:00",
+      "roomName": "Sala 1 (3D)",
+      "pricePerTicket": 15000,
+      "quantity": 2,
+      "total": 30000,
+      "seats": [
+        {
+          "seatId": 41,
+          "seatCode": "F1",
+          "location": "Izquierda - Posterior"
+        },
+        {
+          "seatId": 42,
+          "seatCode": "F2",
+          "location": "Izquierda - Posterior"
+        }
+      ],
+      "status": "cancelled",
+      "createdAt": "2026-08-29T00:21:22.312Z",
+      "paidAt": null,
+      "id": 9,
+      "cancelledAt": "2026-08-29T00:21:50.574Z"
+    },
+    {
+      "userId": 3,
+      "userName": "julian valencia",
+      "email": "julian@gmail.com",
+      "movieId": 1368337,
+      "movieTitle": "La Odisea",
+      "functionId": 19,
+      "roomId": 1,
+      "functionDate": "2026-08-27",
+      "functionTime": "15:00",
+      "roomName": "Sala 1 (3D)",
+      "pricePerTicket": 15000,
+      "quantity": 2,
+      "total": 30000,
+      "seats": [
+        {
+          "seatId": 41,
+          "seatCode": "F1",
+          "location": "Izquierda - Posterior"
+        },
+        {
+          "seatId": 42,
+          "seatCode": "F2",
+          "location": "Izquierda - Posterior"
+        }
+      ],
+      "status": "cancelled",
+      "createdAt": "2026-08-29T00:29:31.434Z",
+      "paidAt": null,
+      "id": 10,
+      "cancelledAt": "2026-08-29T00:29:39.655Z"
     }
   ],
   "purchases": [],

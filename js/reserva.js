@@ -19,6 +19,14 @@ const btnBuySeats = document.getElementById('btnBuySeats');
 const successModal = document.getElementById('successModal');
 const successTitle = document.getElementById('successTitle');
 const successMessage = document.getElementById('successMessage');
+const btnCloseSuccess = document.getElementById('btnCloseSuccess');
+const btnAcceptSuccess = document.getElementById('btnAcceptSuccess');
+const noticeModal = document.getElementById('noticeModal');
+const noticeTitle = document.getElementById('noticeTitle');
+const noticeMessage = document.getElementById('noticeMessage');
+const btnDismissNotice = document.getElementById('btnDismissNotice');
+const btnNoticeAction = document.getElementById('btnNoticeAction');
+let noticeAction = null;
 
 // Elementos del Resumen
 const sumFunction = document.getElementById('sumFunction');
@@ -272,8 +280,12 @@ btnBuySeats.addEventListener('click', () => processBooking('purchased'));
 
 async function processBooking(status) {
     if (!currentUser) {
-        alert("Debes iniciar sesión para reservar o comprar boletas.");
-        window.location.href = '../pages/login.html';
+        showNotice({
+            title: 'Inicia sesión para continuar',
+            message: 'Necesitas una cuenta activa para reservar asientos o comprar boletas.',
+            actionText: 'Ir a iniciar sesión',
+            onAction: () => { window.location.href = 'login.html'; }
+        });
         return;
     }
 
@@ -337,13 +349,50 @@ async function processBooking(status) {
             ? 'Tu pago fue registrado y tus boletas ya están disponibles en tu perfil.'
             : 'Tus asientos quedaron apartados. Puedes pagarlos después desde Mis Boletas.';
         successModal.classList.remove('hidden');
+        document.body.classList.add('modal-open');
+        btnAcceptSuccess.focus();
 
     } catch (error) {
         console.error(error);
-        alert("Ocurrió un error al procesar la operación. Inténtalo de nuevo.");
+        showNotice({
+            title: 'No pudimos completar la operación',
+            message: 'Verifica que el servidor esté activo e inténtalo nuevamente.'
+        });
         setBookingButtonsLoading(false);
     }
 }
+
+function returnToMovieDetails() {
+    if (!movieData?.id) return;
+    window.location.href = `detalles.html?id=${movieData.id}&type=movie`;
+}
+
+btnCloseSuccess.addEventListener('click', returnToMovieDetails);
+btnAcceptSuccess.addEventListener('click', returnToMovieDetails);
+
+function showNotice({ title, message, actionText = '', onAction = null }) {
+    noticeTitle.textContent = title;
+    noticeMessage.textContent = message;
+    noticeAction = onAction;
+    btnNoticeAction.textContent = actionText || 'Continuar';
+    btnNoticeAction.classList.toggle('hidden', !actionText || !onAction);
+    noticeModal.classList.remove('hidden');
+    document.body.classList.add('modal-open');
+    (actionText && onAction ? btnNoticeAction : btnDismissNotice).focus();
+}
+
+function closeNotice() {
+    noticeModal.classList.add('hidden');
+    document.body.classList.remove('modal-open');
+    noticeAction = null;
+}
+
+btnDismissNotice.addEventListener('click', closeNotice);
+btnNoticeAction.addEventListener('click', () => {
+    const action = noticeAction;
+    closeNotice();
+    if (action) action();
+});
 
 function setBookingButtonsLoading(isLoading) {
     btnReserveSeats.disabled = isLoading || selectedSeats.length === 0;

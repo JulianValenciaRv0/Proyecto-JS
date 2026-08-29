@@ -4,6 +4,7 @@
  */
 
 let profileUser = null;
+let pendingCancellation = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
     const userStr = sessionStorage.getItem('cineverse_user');
@@ -21,7 +22,9 @@ async function loadBookings() {
     const purchasedContainer = document.getElementById('purchasedTicketsContainer');
 
     try {
-        const response = await fetch(`${JSON_SERVER_URL}/reservations?userId=${profileUser.id}&_sort=createdAt&_order=desc`);
+        const response = await fetch(`${JSON_SERVER_URL}/reservations?userId=${profileUser.id}&_sort=createdAt&_order=desc&_=${Date.now()}`, {
+            cache: 'no-store'
+        });
         if (!response.ok) throw new Error('No se pudo consultar el historial');
 
         const bookings = await response.json();
@@ -92,13 +95,17 @@ function createTicket(booking, isPurchased) {
             ${isPurchased ? '' : `
                 <div class="ticket-payment">
                     <p>Los asientos están apartados, pero el pago sigue pendiente.</p>
-                    <button class="btn-primary btn-pay-reservation" onclick="payReservation(${booking.id}, this)">Pagar ahora</button>
+                    <div class="reservation-actions">
+                        <button class="btn-primary btn-pay-reservation" onclick="payReservation(${booking.id}, this)">Pagar ahora</button>
+                        <button class="btn-cancel-reservation" onclick="openCancellationModal(${booking.id}, this)">Cancelar reserva</button>
+                    </div>
                 </div>`}
         </article>`;
 }
 
 window.payReservation = async function(reservationId, button) {
-    button.disabled = true;
+    const actionButtons = button.closest('.reservation-actions').querySelectorAll('button');
+    actionButtons.forEach(actionButton => { actionButton.disabled = true; });
     button.textContent = 'Procesando pago...';
 
     try {
@@ -110,7 +117,7 @@ window.payReservation = async function(reservationId, button) {
         if (!availabilityResponse.ok) throw new Error('No se pudo consultar los asientos');
         const functionSeats = await availabilityResponse.json();
         const reservedSeatIds = new Set(reservation.seats.map(seat => seat.seatId));
-        const seatsToSell = functionSeats.filter(item => reservedSeatIds.has(item.seatId));
+        const seatsToSell = functionSeats.filter(item => reservedSeatIds.has(item.seatId) && item.status === 'reserved');
 
         for (const seat of seatsToSell) {
             const seatResponse = await fetch(`${JSON_SERVER_URL}/functionSeats/${seat.id}`, {
@@ -131,8 +138,119 @@ window.payReservation = async function(reservationId, button) {
         await loadBookings();
     } catch (error) {
         console.error('Error paying reservation:', error);
-        alert('No fue posible completar el pago. Inténtalo nuevamente.');
-        button.disabled = false;
+        showProfileNotice('No fue posible completar el pago. Verifica el servidor e inténtalo nuevamente.');
+        actionButtons.forEach(actionButton => { actionButton.disabled = false; });
         button.textContent = 'Pagar ahora';
     }
 };
+
+window.openCancellationModal = function(reservationId, button) {
+    const modal = document.getElementById('cancelReservationModal');
+    const movieTitle = button.closest('.ticket-card').querySelector('.ticket-title').textContent;
+    pendingCancellation = { reservationId, button, processing: false };
+    document.getElementById('cancelModalMessage').textContent = `Los asientos reservados para “${movieTitle}” volverán a estar disponibles para otros usuarios.`;
+    modal.classList.remove('hidden');
+    document.body.classList.add('modal-open');
+    document.getElementById('btnKeepReservation').focus();
+};
+
+function closeCancellationModal(force = false) {
+    if (pendingCancellation?.processing && !force) return;
+    const modal = document.getElementById('cancelReservationModal');
+    modal.classList.add('hidden');
+    document.body.classList.remove('modal-open');
+    const confirmButton = document.getElementById('btnConfirmCancellation');
+    const keepButton = document.getElementById('btnKeepReservation');
+    confirmButton.disabled = false;
+    keepButton.disabled = false;
+    confirmButton.textContent = 'Sí, cancelar';
+    pendingCancellation = null;
+}
+
+async function cancelReservation(reservationId, button) {
+    const actions = button.closest('.reservation-actions');
+    const actionButtons = actions.querySelectorAll('button');
+    actionButtons.forEach(actionButton => { actionButton.disabled = true; });
+    const confirmButton = document.getElementById('btnConfirmCancellation');
+    const keepButton = document.getElementById('btnKeepReservation');
+    confirmButton.disabled = true;
+    keepButton.disabled = true;
+    confirmButton.textContent = 'Cancelando...';
+    if (pendingCancellation) pendingCancellation.processing = true;
+
+    try {
+        const reservationResponse = await fetch(`${JSON_SERVER_URL}/reservations/${reservationId}`);
+        if (!reservationResponse.ok) throw new Error('Reserva no encontrada');
+        const reservation = await reservationResponse.json();
+
+        if (reservation.userId !== profileUser.id || reservation.status !== 'reserved') {
+            throw new Error('La reserva no está disponible para cancelar');
+        }
+
+        const availabilityResponse = await fetch(`${JSON_SERVER_URL}/functionSeats?functionId=${reservation.functionId}`);
+        if (!availabilityResponse.ok) throw new Error('No se pudo consultar los asientos');
+        const functionSeats = await availabilityResponse.json();
+        const reservedSeatIds = new Set(reservation.seats.map(seat => seat.seatId));
+        const seatsToRelease = functionSeats.filter(item => reservedSeatIds.has(item.seatId) && item.status === 'reserved');
+
+        const releaseResponses = await Promise.all(seatsToRelease.map(seat =>
+            fetch(`${JSON_SERVER_URL}/functionSeats/${seat.id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: 'available' })
+            })
+        ));
+
+        if (releaseResponses.some(response => !response.ok)) {
+            throw new Error('No se pudieron liberar todos los asientos');
+        }
+
+        const cancellationResponse = await fetch(`${JSON_SERVER_URL}/reservations/${reservationId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: 'cancelled', cancelledAt: new Date().toISOString() })
+        });
+        if (!cancellationResponse.ok) throw new Error('No se pudo cancelar la reserva');
+
+        const cancelledCard = button.closest('.ticket-card');
+        cancelledCard.remove();
+        const reservedCount = document.getElementById('reservedCount');
+        reservedCount.textContent = Math.max(0, Number(reservedCount.textContent) - 1);
+        closeCancellationModal(true);
+        await loadBookings();
+    } catch (error) {
+        console.error('Error cancelling reservation:', error);
+        showProfileNotice('No fue posible cancelar la reserva. Inténtalo nuevamente.');
+        actionButtons.forEach(actionButton => { actionButton.disabled = false; });
+        confirmButton.disabled = false;
+        keepButton.disabled = false;
+        confirmButton.textContent = 'Sí, cancelar';
+        if (pendingCancellation) pendingCancellation.processing = false;
+    }
+}
+
+document.getElementById('btnKeepReservation').addEventListener('click', closeCancellationModal);
+document.querySelector('[data-close-cancel-modal]').addEventListener('click', closeCancellationModal);
+document.getElementById('btnConfirmCancellation').addEventListener('click', async () => {
+    if (!pendingCancellation) return;
+    await cancelReservation(pendingCancellation.reservationId, pendingCancellation.button);
+});
+
+document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && !document.getElementById('cancelReservationModal').classList.contains('hidden')) {
+        closeCancellationModal();
+    }
+});
+
+function showProfileNotice(message) {
+    const region = document.getElementById('profileNoticeRegion');
+    const notice = document.createElement('div');
+    notice.className = 'profile-notice profile-notice-error';
+    notice.innerHTML = `
+        <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+        <p>${message}</p>
+        <button type="button" aria-label="Cerrar aviso">×</button>`;
+
+    notice.querySelector('button').addEventListener('click', () => notice.remove());
+    region.replaceChildren(notice);
+}

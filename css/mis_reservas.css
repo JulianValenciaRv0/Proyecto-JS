@@ -264,6 +264,205 @@
     margin-bottom: 0.9rem;
 }
 
+.profile-notice-region {
+    position: fixed;
+    top: 90px;
+    right: clamp(1rem, 3vw, 2rem);
+    z-index: 11000;
+    width: min(calc(100% - 2rem), 430px);
+}
+
+.profile-notice {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1rem;
+    background: #17191e;
+    border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 12px;
+    box-shadow: 0 18px 50px rgba(0,0,0,0.45);
+    animation: profileNoticeIn 0.25s ease-out;
+}
+
+@keyframes profileNoticeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.profile-notice > i {
+    color: #f87171;
+    font-size: 1.2rem;
+}
+
+.profile-notice p {
+    color: #d7d8db;
+    font-size: 0.84rem;
+    line-height: 1.5;
+}
+
+.profile-notice button {
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    color: var(--text-muted);
+    background: transparent;
+    border: 0;
+    border-radius: 50%;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+.profile-notice button:hover {
+    color: white;
+    background: rgba(255,255,255,0.07);
+}
+
+.reservation-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.7rem;
+}
+
+.btn-cancel-reservation {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background: transparent;
+    color: #f87171;
+    border: 1px solid rgba(239,68,68,0.35);
+    border-radius: 8px;
+    font-family: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-cancel-reservation:hover:not(:disabled) {
+    color: white;
+    background: rgba(239,68,68,0.14);
+    border-color: #ef4444;
+}
+
+.btn-cancel-reservation:disabled {
+    opacity: 0.45;
+    cursor: wait;
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+.booking-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+}
+
+.booking-modal.hidden {
+    display: none;
+}
+
+.booking-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(3,4,6,0.82);
+    backdrop-filter: blur(9px);
+}
+
+.booking-modal-card {
+    width: min(100%, 460px);
+    position: relative;
+    z-index: 1;
+    padding: clamp(1.7rem, 5vw, 2.5rem);
+    background: #111317;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.65);
+    text-align: center;
+    animation: bookingModalIn 0.22s ease-out;
+}
+
+@keyframes bookingModalIn {
+    from { opacity: 0; transform: translateY(12px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.booking-modal-icon {
+    width: 58px;
+    height: 58px;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 1.2rem;
+    border-radius: 50%;
+    color: #f87171;
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.25);
+    font-size: 1.35rem;
+}
+
+.booking-modal-card .booking-kicker {
+    color: #f87171;
+}
+
+.booking-modal-card h2 {
+    margin: 0.65rem 0 0.8rem;
+    color: white;
+    font-size: clamp(1.55rem, 4vw, 2rem);
+    letter-spacing: -0.035em;
+}
+
+.booking-modal-card > p {
+    color: var(--text-muted);
+    line-height: 1.65;
+}
+
+.booking-modal-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-top: 1.7rem;
+}
+
+.booking-modal-actions button {
+    min-height: 46px;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-family: inherit;
+    font-weight: 800;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-keep-reservation {
+    color: white;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.14);
+}
+
+.btn-confirm-cancellation {
+    color: white;
+    background: #dc2626;
+    border: 1px solid #dc2626;
+}
+
+.btn-keep-reservation:hover:not(:disabled) {
+    background: rgba(255,255,255,0.1);
+}
+
+.btn-confirm-cancellation:hover:not(:disabled) {
+    background: #ef4444;
+    border-color: #ef4444;
+}
+
+.booking-modal-actions button:disabled {
+    opacity: 0.5;
+    cursor: wait;
+}
+
 .btn-pay-reservation {
     width: 100%;
 }
@@ -286,4 +485,6 @@
     .tickets-grid { grid-template-columns: 1fr; }
     .ticket-body { align-items: flex-start; }
     .ticket-title { padding-right: 0; padding-top: 2rem; }
+    .reservation-actions { grid-template-columns: 1fr; }
+    .booking-modal-actions { grid-template-columns: 1fr; }
 }
