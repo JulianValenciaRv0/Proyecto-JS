@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Reservas - CineVerse</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/mis_reservas.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="profileNoticeRegion" class="profile-notice-region" aria-live="polite"></div>
+
+    <!-- Header / Navbar -->
+    <header class="header-principal">
+        <div class="header-container">
+            <a href="../index.html" class="logo-container" title="Inicio CineVerse Explorer"><img src="../media/logo.svg" alt="CineVerse Logo" class="logo-img"></a>
+            <nav class="nav-principal" aria-label="Navegación principal"><ul class="nav-lista"><li class="nav-item"><a href="peliculas.html" class="nav-link">Películas</a></li><li class="nav-item"><a href="series.html" class="nav-link">Series de TV</a></li><li class="nav-item"><a href="personas.html" class="nav-link">Personas</a></li><li class="nav-item"><a href="awards.html" class="nav-link">Awards</a></li></ul></nav>
+            <div id="authMenu" class="nav-user"></div>
+        </div>
+    </header>
+
+    <main class="reservas-container">
+        <div class="reservas-header">
+            <h1><i class="fa-solid fa-ticket"></i> Mis Boletas</h1>
+            <p>Administra tus asientos reservados y consulta tus compras.</p>
+        </div>
+
+        <section class="booking-section" aria-labelledby="reservedTitle">
+            <div class="booking-section-heading">
+                <div>
+                    <span class="booking-kicker">Pendientes de pago</span>
+                    <h2 id="reservedTitle">Asientos reservados</h2>
+                </div>
+                <span id="reservedCount" class="booking-count">0</span>
+            </div>
+            <div id="reservedTicketsContainer" class="tickets-grid">
+                <div class="loading-spinner">
+                    <i class="fa-solid fa-circle-notch fa-spin"></i> Cargando reservas...
+                </div>
+            </div>
+        </section>
+
+        <section class="booking-section purchased-section" aria-labelledby="purchasedTitle">
+            <div class="booking-section-heading">
+                <div>
+                    <span class="booking-kicker">Pago completado</span>
+                    <h2 id="purchasedTitle">Boletas compradas</h2>
+                </div>
+                <span id="purchasedCount" class="booking-count">0</span>
+            </div>
+            <div id="purchasedTicketsContainer" class="tickets-grid"></div>
+        </section>
+    </main>
+
+    <div id="cancelReservationModal" class="booking-modal hidden" role="dialog" aria-modal="true" aria-labelledby="cancelModalTitle">
+        <div class="booking-modal-backdrop" data-close-cancel-modal></div>
+        <div class="booking-modal-card">
+            <div class="booking-modal-icon"><i class="fa-solid fa-ticket"></i></div>
+            <span class="booking-kicker">Confirmar cancelación</span>
+            <h2 id="cancelModalTitle">¿Cancelar esta reserva?</h2>
+            <p id="cancelModalMessage">Los asientos seleccionados volverán a estar disponibles para otros usuarios.</p>
+            <div class="booking-modal-actions">
+                <button id="btnKeepReservation" class="btn-keep-reservation">Mantener reserva</button>
+                <button id="btnConfirmCancellation" class="btn-confirm-cancellation">Sí, cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/mis_reservas.js"></script>
+</body>
+</html>

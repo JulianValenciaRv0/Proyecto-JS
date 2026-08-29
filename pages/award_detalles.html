@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalles del Premio - CineVerse Explorer</title>
+  <meta name="description" content="Lista de nominados y ganadores simulados del galardón.">
+  
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .award-header {
+      padding: 3rem 2rem;
+      text-align: center;
+      background: radial-gradient(ellipse at top, rgba(245, 158, 11, 0.15) 0%, transparent 70%);
+      margin-bottom: 2rem;
+      border-bottom: var(--border-glass);
+    }
+    .award-header h1 {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+      background: var(--grad-gold);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .award-header p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+    .category-section {
+      margin-bottom: 4rem;
+    }
+    .category-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .category-title::before {
+      content: '⭐';
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER PRINCIPAL -->
+  <header class="header-principal">
+    <div class="header-container">
+      <a href="../index.html" class="logo-container" title="Inicio CineVerse Explorer">
+        <img src="../media/logo.svg" alt="CineVerse Logo" class="logo-img">
+      </a>
+
+      <nav class="nav-principal">
+        <ul class="nav-lista">
+          <li class="nav-item"><a href="peliculas.html" class="nav-link">Películas</a></li>
+          <li class="nav-item"><a href="series.html" class="nav-link">Series de TV</a></li>
+          <li class="nav-item"><a href="personas.html" class="nav-link">Personas</a></li>
+          <li class="nav-item"><a href="awards.html" class="nav-link activo">Awards</a></li>
+        </ul>
+      </nav>
+      <div id="authMenu" class="nav-user"></div>
+    </div>
+  </header>
+
+  <!-- CABECERA DEL PREMIO -->
+  <div class="award-header" id="award-header-container">
+    <h1 id="award-title">Cargando...</h1>
+    <p id="award-desc">Preparando la gala de premiación</p>
+  </div>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="contenedor-principal" style="max-width: 1400px;" id="award-categories-container">
+    <div class="cargando-spinner">Analizando los ganadores...</div>
+  </main>
+
+  <!-- FOOTER PRINCIPAL -->
+  <footer class="footer-principal">
+    <div class="footer-contenido">
+      <div class="footer-info">
+        <h4>CineVerse Explorer</h4>
+        <p>Aplicación desarrollada con Vanilla JavaScript (Simulación Front-End con /discover).</p>
+      </div>
+      <div>
+        <img src="../media/logo.svg" alt="CineVerse Logo" style="height: 32px;">
+      </div>
+    </div>
+    <div class="footer-copy">
+      <p>&copy; 2026 CineVerse Explorer - Práctica de Desarrollo Web</p>
+    </div>
+  </footer>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/render.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/award_detalles.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "proyecto-js",
+  "version": "1.0.0",
+  "description": "\"# Proyecto-JS\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "json-server --watch db.json --port 3000 --static ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JulianValenciaRv0/Proyecto-JS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/JulianValenciaRv0/Proyecto-JS/issues"
+  },
+  "homepage": "https://github.com/JulianValenciaRv0/Proyecto-JS#readme",
+  "dependencies": {
+    "json-server": "^0.17.4"
+  }
+}

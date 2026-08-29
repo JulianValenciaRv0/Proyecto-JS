@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalles - CineVerse Explorer</title>
+  <meta name="description" content="Detalles de la película, serie o persona en CineVerse.">
+  
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- HEADER PRINCIPAL -->
+  <header class="header-principal">
+    <div class="header-container">
+      <a href="../index.html" class="logo-container" title="Inicio CineVerse Explorer">
+        <img src="../media/logo.svg" alt="CineVerse Logo" class="logo-img">
+      </a>
+
+      <nav class="nav-principal">
+        <ul class="nav-lista">
+          <li class="nav-item">
+            <a href="peliculas.html" class="nav-link">Películas</a>
+          </li>
+          <li class="nav-item">
+            <a href="series.html" class="nav-link">Series de TV</a>
+          </li>
+          <li class="nav-item">
+            <a href="personas.html" class="nav-link">Personas</a>
+          </li>
+          <li class="nav-item">
+            <a href="awards.html" class="nav-link">Awards</a>
+          </li>
+        </ul>
+      </nav>
+
+      <div id="authMenu" class="nav-user"></div>
+    </div>
+  </header>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="contenedor-principal detalles-main">
+    <div id="contenedor-detalles">
+      <div class="cargando-spinner">Cargando detalles...</div>
+    </div>
+  </main>
+
+  <!-- FOOTER PRINCIPAL -->
+  <footer class="footer-principal">
+    <div class="footer-contenido">
+      <div class="footer-brand"><img src="../media/logo.svg" alt="CineVerse Logo" class="footer-logo"><p>Un espacio para descubrir películas, series y las personas que convierten cada historia en cine.</p><span class="footer-signature">EXPLORE · DISCOVER · WATCH</span></div>
+      <div class="footer-nav-group"><h4>Descubrir</h4><a href="peliculas.html">Películas</a><a href="series.html">Series de TV</a><a href="personas.html">Personas</a><a href="awards.html">Awards</a></div>
+      <div class="footer-nav-group"><h4>Explorar</h4><a href="peliculas.html?cat=popular">Populares</a><a href="peliculas.html?cat=now_playing">En cartelera</a><a href="peliculas.html?cat=upcoming">Próximamente</a><a href="peliculas.html?cat=top_rated">Mejor calificadas</a></div>
+      <div class="footer-project"><span class="section-kicker">Sobre el proyecto</span><p>Desarrollado con HTML, CSS y JavaScript vanilla. Información cinematográfica proporcionada por TMDB.</p><a href="login.html" class="text-link">Acceder a CineVerse <span aria-hidden="true">↗</span></a></div>
+    </div>
+    <div class="footer-copy"><p>&copy; 2026 CineVerse Explorer</p><p>Diseñado para quienes siempre buscan la próxima historia.</p></div>
+  </footer>
+
+  <!-- SCRIPTS MODULARES -->
+  <script src="../js/config.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/render.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/detalles.js"></script>
+</body>
+</html>
